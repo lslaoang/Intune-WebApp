@@ -13,6 +13,6 @@ public class IntuneController {
 
     @GetMapping("/verify")
     public ResponseEntity<?> verify(){
-        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>( new Accepted(), HttpStatus.ACCEPTED);
     }
 }
