@@ -1,6 +1,7 @@
 package com.testco.intunewebapp.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -8,7 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebAppConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
-                .authorizeRequests().mvcMatchers("/api/v1/verify").permitAll();
+//        super.configure(httpSecurity);
+
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                        .mvcMatchers(HttpMethod.GET,"/health").permitAll()
+                        .mvcMatchers(HttpMethod.GET,"/api/v1/verify").permitAll()
+                        .anyRequest().authenticated()
+                .and()
+                .headers()
+                .contentSecurityPolicy("default-src 'none'");
+
     }
 }

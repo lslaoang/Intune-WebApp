@@ -1,0 +1,7 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: ""
+        include: "health"
+      base-path: /
