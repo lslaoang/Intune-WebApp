@@ -5,3 +5,44 @@ management:
         exclude: ""
         include: "health"
       base-path: /
+api:
+  endpoints:
+    base-path: /api/v1
+
+server:
+  port: 8088
+
+
+azure:
+  activedirectory:
+    client-id: 077eb991-1556-481b-9145-26ded6919fbf
+    client-secret: A2i7Q~rIzmbyuSgq-Q4iM55R.kfklTvpIDdNE
+    app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
+    tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
+    authorization-clients:
+      graph:
+        scopes:
+          #          - https://graph.microsoft.com/Directory.AccessAsUser.All
+          #          - https://graph.microsoft.com/Group.Read.All
+          #          - https://graph.microsoft.com/GroupMember.Read.All
+          - https://graph.microsoft.com/User.Read
+    #          - https://graph.microsoft.com/Calendar.Read
+    #          - https://graph.microsoft.com/Contacts.Read
+    #  keyvault:
+    #    client-id: 229f637f-7078-42f9-9be7-c08bf1f7b636
+    ##    client-key: asd
+    #    enabled: true
+    #    tenant-id: 64f6665f-f419-4b3a-b27f-4f01b7d49d64
+    #    uri: https://springapikeyvault.vault.azure.net/
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+    com:
+      azure:
+        spring: TRACE
+spring:
+  profiles:
+    active: prod
