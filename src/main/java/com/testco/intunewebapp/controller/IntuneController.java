@@ -7,12 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("${api.endpoints.base-path}")
 public class IntuneController {
 
-    @GetMapping("/verify")
+    @GetMapping(path ="/verify")
     public ResponseEntity<?> verify(){
         return new ResponseEntity<>( new Accepted(), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/check")
+    public ResponseEntity<?> check(){
+        return new ResponseEntity<>( "All Good!", HttpStatus.ACCEPTED);
     }
 }
