@@ -5,3 +5,22 @@ management:
         exclude: ""
         include: "health"
       base-path: /
+
+server:
+  port: 8088
+
+zure:
+  activedirectory:
+    client-id: edd1424f-da57-417a-9404-324c5d2b9b24 #077eb991-1556-481b-9145-26ded6919fbf
+    client-secret: 5Mm7Q~LcWay5.IkePiAsBA4WWxoIR9FATx-kY #A2i7Q~rIzmbyuSgq-Q4iM55R.kfklTvpIDdNE
+    #    app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
+    tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
+#    authorization-clients:
+#      graph:
+#        scopes:
+#          - https://graph.microsoft.com/Directory.AccessAsUser.All
+#          - https://graph.microsoft.com/Group.Read.All
+#          - https://graph.microsoft.com/GroupMember.Read.All
+#          - https://graph.microsoft.com/User.Read
+#          - https://graph.microsoft.com/Calendar.Read
+#          - https://graph.microsoft.com/Contacts.Read
