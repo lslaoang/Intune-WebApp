@@ -9,6 +9,9 @@ api:
   endpoints:
     base-path: /api/v1
 
+app:
+  allowed-group: "IT"
+
 server:
   port: 8088
 
