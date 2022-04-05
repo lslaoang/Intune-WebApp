@@ -8,6 +8,8 @@ management:
 api:
   endpoints:
     base-path: /api/v1
+#    resource: http://localhost:8181/resource #LOCAL
+    resource: https://testco-res.azurewebsites.net/resource
 
 app:
   allowed-group: "IT"
@@ -25,18 +27,10 @@ azure:
     authorization-clients:
       graph:
         scopes:
-          #          - https://graph.microsoft.com/Directory.AccessAsUser.All
-          #          - https://graph.microsoft.com/Group.Read.All
-          #          - https://graph.microsoft.com/GroupMember.Read.All
           - https://graph.microsoft.com/User.Read
-    #          - https://graph.microsoft.com/Calendar.Read
-    #          - https://graph.microsoft.com/Contacts.Read
-    #  keyvault:
-    #    client-id: 229f637f-7078-42f9-9be7-c08bf1f7b636
-    ##    client-key: asd
-    #    enabled: true
-    #    tenant-id: 64f6665f-f419-4b3a-b27f-4f01b7d49d64
-    #    uri: https://springapikeyvault.vault.azure.net/
+      testco-res:
+        scopes:
+          - api://testco-res/Consumer.read
 
 logging:
   level:
