@@ -1,4 +1,4 @@
-package com.testco.intunewebapp.config;
+package com.testco.intunewebapp.config.handler;
 
 import com.testco.intunewebapp.model.response.UnAuthorizedAccess;
 import org.springframework.http.HttpStatus;

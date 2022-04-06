@@ -1,10 +1,10 @@
-package com.testco.intunewebapp.config;
+package com.testco.intunewebapp.config.handler;
 
 import com.testco.intunewebapp.model.response.AccessDenied;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +14,14 @@ import java.util.logging.Logger;
 import static com.testco.intunewebapp.util.ResponseWriterUtil.writeErrorResponse;
 
 @Component
-public class IntuneAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class IntuneAccessDeniedHandler implements AccessDeniedHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(IntuneAuthenticationEntryPoint.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IntuneAccessDeniedHandler.class.getName());
 
     @Override
-    public void commence(HttpServletRequest request,
-                         HttpServletResponse response,
-                         AuthenticationException authException) {
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

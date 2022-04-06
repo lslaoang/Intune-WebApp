@@ -1,6 +1,9 @@
 package com.testco.intunewebapp.config;
 
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
+import com.testco.intunewebapp.config.handler.IntuneAccessDeniedHandler;
+import com.testco.intunewebapp.config.handler.IntuneAuthenticationEntryPoint;
+import com.testco.intunewebapp.config.handler.IntuneAuthenticationFailureFilter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
