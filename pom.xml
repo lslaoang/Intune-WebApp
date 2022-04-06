@@ -81,34 +81,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.microsoft.azure</groupId>-->
-<!--                <artifactId>azure-webapp-maven-plugin</artifactId>-->
-<!--                <version>2.2.0</version>-->
-<!--                <configuration>-->
-<!--                    <schemaVersion>v2</schemaVersion>-->
-<!--                    <subscriptionId>6c6887b9-8797-4bf4-b7b8-c4ff73855f75</subscriptionId>-->
-<!--                    <resourceGroup>SpringWebApp</resourceGroup>-->
-<!--                    <appName>intune-webapp</appName>-->
-<!--                    <appServicePlanName>Azure subscription 1</appServicePlanName>-->
-<!--                    <appServicePlanResourceGroup>SpringWebApp</appServicePlanResourceGroup>-->
-<!--                    <runtime>-->
-<!--                        <os>Linux</os>-->
-<!--                        <javaVersion>Java 8</javaVersion>-->
-<!--                        <webContainer>Tomcat 9.0</webContainer>-->
-<!--                    </runtime>-->
-<!--                    <deployment>-->
-<!--                        <resources>-->
-<!--                            <resource>-->
-<!--                                <directory>${project.basedir}/target</directory>-->
-<!--                                <includes>-->
-<!--                                    <include>*.war</include>-->
-<!--                                </includes>-->
-<!--                            </resource>-->
-<!--                        </resources>-->
-<!--                    </deployment>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 </project>

@@ -1,0 +1,33 @@
+api:
+  endpoints:
+    base-path: /api/v1
+    resource: http://localhost:8181/resource
+
+app:
+  allowed-group: "IT"
+
+server:
+  port: 8088
+
+azure:
+  activedirectory:
+    client-id: 077eb991-1556-481b-9145-26ded6919fbf
+    client-secret: A2i7Q~rIzmbyuSgq-Q4iM55R.kfklTvpIDdNE
+    app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
+    tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
+    authorization-clients:
+      graph:
+        scopes:
+          - https://graph.microsoft.com/User.Read
+      testco-res:
+        scopes:
+          - api://testco-res/Consumer.read
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+    com:
+      azure:
+        spring: TRACE
