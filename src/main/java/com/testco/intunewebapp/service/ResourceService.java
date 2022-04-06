@@ -1,47 +1,42 @@
 package com.testco.intunewebapp.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Service
 public class ResourceService {
 
+    private static final Logger LOGGER = Logger.getLogger(ResourceService.class.getName());
+
+    private final WebClient webClient;
+
     @Value("${api.endpoints.resource}")
     String resourceLink;
 
-    @Autowired
-    WebClient webClient;
+    public ResourceService(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
-    public void checkResource(OAuth2AuthorizedClient authorizedClient){
-
-        URI uri;
+    public void checkResource(OAuth2AuthorizedClient authorizedClient) {
+        LOGGER.info("Checking of resources started.");
         try {
-            uri = new URI(resourceLink);
-        } catch (
-                URISyntaxException e) {
-            throw new RuntimeException("Unable to create URI. {}", e);
-        }
-        System.out.println(authorizedClient.getAccessToken().getTokenValue());
-
-        try {
-            String response = webClient
+            webClient
                     .get()
-                    .uri(uri)
+                    .uri(new URI(resourceLink))
                     .attributes(oauth2AuthorizedClient(authorizedClient))
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
-            System.out.println("Success!" + response);
+            LOGGER.info("Retrieving of resources successful!");
         } catch (Exception e) {
-            System.out.println("Failed to check resource.");
+            LOGGER.error("Failed to check resource.");
             throw new RuntimeException("Error occurred calling resource endpoint.", e);
         }
     }

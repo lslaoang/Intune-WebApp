@@ -45,11 +45,4 @@ public class IntuneController {
     public ResponseEntity<?> check() {
         return new ResponseEntity<>("All Good!", HttpStatus.ACCEPTED);
     }
-//
-//    @GetMapping(path = "/resource")
-//    public String checkResource(@RegisteredOAuth2AuthorizedClient("testco-res")
-//                                            OAuth2AuthorizedClient authorizedClient){
-//        resourceService.checkResource(authorizedClient);
-//        return "Successfully checked!";
-//    }
 }
