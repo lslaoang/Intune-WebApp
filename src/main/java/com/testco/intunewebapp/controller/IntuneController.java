@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${api.endpoints.base-path}")
+@RequestMapping("${api.base-path}")
 public class IntuneController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntuneController.class);

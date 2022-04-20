@@ -1,7 +1,9 @@
 api:
-  endpoints:
-    base-path: /api/v1
-    resource: http://localhost:8181/resource
+  base-path: /api/v1
+  provider:
+    resource:
+      base-uri: http://localhost:8181
+      endpoint: /api/v1/resource
 
 app:
   allowed-group: "IT"
@@ -27,7 +29,7 @@ logging:
   level:
     org:
       springframework:
-        security: TRACE
+        security: DEBUG
     com:
       azure:
-        spring: TRACE
+        spring: DEBUG

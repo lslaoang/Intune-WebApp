@@ -17,8 +17,11 @@ public class ResourceService {
 
     private final WebClient webClient;
 
-    @Value("${api.endpoints.resource}")
-    String resourceLink;
+    @Value("${api.provider.resource.base-uri}")
+    String resourceBaseUri;
+
+    @Value("${api.provider.resource.endpoint}")
+    String resourceEndpoint;
 
     public ResourceService(WebClient webClient) {
         this.webClient = webClient;
@@ -29,7 +32,7 @@ public class ResourceService {
         try {
             webClient
                     .get()
-                    .uri(new URI(resourceLink))
+                    .uri(new URI(resourceBaseUri + resourceEndpoint))
                     .attributes(oauth2AuthorizedClient(authorizedClient))
                     .retrieve()
                     .bodyToMono(String.class)
