@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
-    
+
     private final IntuneAccessDeniedHandler intuneAccessDeniedHandler;
     private final IntuneAuthenticationEntryPoint intuneAuthenticationEntryPoint;
     private final IntuneAuthenticationFailureFilter intuneAuthenticationFailureFilter;
@@ -32,20 +32,21 @@ public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebS
         // @formatter:off
         http
                 .exceptionHandling()
-                    .accessDeniedHandler(intuneAccessDeniedHandler)
+                .accessDeniedHandler(intuneAccessDeniedHandler)
                 .authenticationEntryPoint(intuneAuthenticationEntryPoint).and()
                 .addFilter(intuneAuthenticationFailureFilter.bearerTokenAuthenticationFilter(authenticationManagerBean()))
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .authorizeRequests(requests -> requests
-                        .mvcMatchers(HttpMethod.GET,"/health").anonymous()
+                .authorizeRequests(requests -> requests
+                        .mvcMatchers(HttpMethod.GET, "/health").anonymous()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/check").authenticated()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/verify").hasAuthority("SCOPE_Consumer.read")
+                        .mvcMatchers(HttpMethod.GET, "/apigee").authenticated()
                         .anyRequest()
                         .denyAll())
                 .headers()
-                    .contentSecurityPolicy("default-src 'non'");
+                .contentSecurityPolicy("default-src 'non'");
         // @formatter:on
     }
 }

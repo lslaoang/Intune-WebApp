@@ -23,13 +23,19 @@ azure:
           - https://graph.microsoft.com/User.Read
       testco-res:
         scopes:
-          - api://testco-res/Consumer.read
+          - api://testco-res/File.Upload
+      testco-webapp:
+        scopes:
+          - api://testco-webapp/Consumer.read
+#          - openid
+#          - profile
+#          - offline_access
 
 logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: TRACE
     com:
       azure:
-        spring: DEBUG
+        spring: TRACE
