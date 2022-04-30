@@ -8,4 +8,4 @@ management:
 
 spring:
   profiles:
-    active: prod
+    active: local

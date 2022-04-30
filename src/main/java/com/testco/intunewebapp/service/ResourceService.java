@@ -35,7 +35,8 @@ public class ResourceService {
                     .get()
 //                    .uri(new URI(resourceBaseUri + resourceEndpoint))
                     .uri("http://localhost:" + hostBaseUrl + "/apigee")
-                    .attributes(clientRegistrationId("testco-webapp"))
+                    .attributes(clientRegistrationId("testco-res")) //When calling outside instances, specify the clientRegistrationId for the called endpoint
+                    .attributes(clientRegistrationId("testco-webapp")) //Within app since Spring security will check the validity of the token for this instance
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
