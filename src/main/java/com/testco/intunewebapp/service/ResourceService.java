@@ -15,6 +15,7 @@ public class ResourceService {
     private static final Logger LOGGER = Logger.getLogger(ResourceService.class.getName());
 
     private final WebClient webClient;
+
     @Value("${api.provider.resource.base-uri}")
     String resourceBaseUri;
     @Value("${api.provider.resource.endpoint}")
@@ -35,8 +36,9 @@ public class ResourceService {
                     .get()
 //                    .uri(new URI(resourceBaseUri + resourceEndpoint))
                     .uri("http://localhost:" + hostBaseUrl + "/apigee")
-                    .attributes(clientRegistrationId("testco-res")) //When calling outside instances, specify the clientRegistrationId for the called endpoint
+//                    .attributes(clientRegistrationId("testco-res")) //When calling outside instances, specify the clientRegistrationId for the called endpoint
                     .attributes(clientRegistrationId("testco-webapp")) //Within app since Spring security will check the validity of the token for this instance
+                    .header("X-WEBAPP-SOURCE", "INTERNAL")
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
