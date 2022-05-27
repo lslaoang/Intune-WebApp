@@ -35,6 +35,7 @@ public class ApigeeController {
         System.out.println(hostAddress);
         String requestAddress = request.getLocalAddr();
         System.out.println(requestAddress);
+        System.out.println("Address header: " + request.getHeader("X-WEBAPP-ADDRESS")) ;
         return request.getHeader(UBS_INTERNAL).equals(UBS_INTERNAL_VALUE);
     }
 }
