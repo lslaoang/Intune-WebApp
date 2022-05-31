@@ -28,7 +28,8 @@ public class IntuneAuthenticationFailureFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             writeErrorResponse(response, new UnAuthorizedAccess());
-            LOGGER.severe(String.format("Access from %s denied. Token invalid", request.getRemoteAddr()));
+            LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
+//            LOGGER.severe("Access from " +request.getRemoteAddr() + " denied. With error: " + exception.getMessage());
         }));
     }
 }

@@ -26,7 +26,7 @@ public class IntuneAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         writeErrorResponse(response, new AccessDenied());
-        LOGGER.severe(String.format("Access from %s denied.", request.getRemoteAddr()));
+        LOGGER.severe(String.format("Access from {} denied. ", request.getRemoteAddr()) + accessDeniedException.getMessage());
 
     }
 }
