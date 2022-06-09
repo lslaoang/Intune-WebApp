@@ -52,7 +52,6 @@ public class ResourceService {
 
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-            System.out.println(user.getTokenValue());
 
         } catch (Exception e) {
             LOGGER.error("Failed to check resource." + e);
