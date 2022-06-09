@@ -25,6 +25,7 @@ public class IntuneAuthenticationFailureFilter {
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
         return (((request, response, exception) -> {
+            LOGGER.severe(request.getHeader("Authorization"));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             writeErrorResponse(response, new UnAuthorizedAccess());

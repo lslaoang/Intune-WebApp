@@ -31,11 +31,3 @@ azure:
 #          - profile
 #          - offline_access
 
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
-    com:
-      azure:
-        spring: TRACE

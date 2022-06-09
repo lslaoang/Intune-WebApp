@@ -23,6 +23,7 @@ public class IntuneAccessDeniedHandler implements AccessDeniedHandler {
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) {
 
+        LOGGER.severe(request.getHeader("Authorization"));
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         writeErrorResponse(response, new AccessDenied());
