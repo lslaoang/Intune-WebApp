@@ -16,8 +16,8 @@ logging:
       springframework:
         security: DEBUG
         web:
-          filter:
-            CommonsRequestLoggingFilter: DEBUG
+            filter:
+                CommonsRequestLoggingFilter: DEBUG
     com:
       azure:
         spring: DEBUG
