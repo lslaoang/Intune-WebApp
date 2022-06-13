@@ -9,3 +9,20 @@ management:
 spring:
   profiles:
     active: local
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+            filter:
+                CommonsRequestLoggingFilter: DEBUG
+    com:
+      azure:
+        spring: DEBUG
+
+server:
+  tomcat:
+    accessLogEnabled: true
+    accessLogPattern:

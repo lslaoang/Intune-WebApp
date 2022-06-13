@@ -37,9 +37,4 @@ public class IntuneController {
         }
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
-
-    @GetMapping(path = "/check")
-    public ResponseEntity<?> check() {
-        return new ResponseEntity<>("All Good!", HttpStatus.ACCEPTED);
-    }
 }
