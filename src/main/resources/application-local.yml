@@ -27,7 +27,3 @@ azure:
       testco-webapp:
         scopes:
           - api://testco-webapp/Consumer.read
-#          - openid
-#          - profile
-#          - offline_access
-

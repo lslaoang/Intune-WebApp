@@ -14,15 +14,10 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: TRACE
         web:
-            filter:
-                CommonsRequestLoggingFilter: DEBUG
+          filter:
+            CommonsRequestLoggingFilter: TRACE
     com:
       azure:
-        spring: DEBUG
-
-server:
-  tomcat:
-    accessLogEnabled: true
-    accessLogPattern:
+        spring: TRACE
