@@ -28,7 +28,5 @@ public class IntuneAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         writeErrorResponse(response, new AccessDenied());
         LOGGER.severe(String.format("Access from %s denied. ", request.getRemoteAddr()) + authException.getMessage());
-//        LOGGER.severe("Access from " +request.getRemoteAddr() + " denied. With error: " + authException.getMessage());
-
     }
 }
