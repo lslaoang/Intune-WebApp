@@ -12,29 +12,46 @@ paths:
       operationId: "verify"
       responses:
         200:
+          $ref: '#/components/responses/Accepted'
         400:
+          $ref: '#/components/responses/BadRequest'
         401:
+          description: "Access denied."
         403:
+          description: "Insufficient rights. You are not allowed to call this service."
         500:
+          description: "Internal error."
 
 components:
-  schemas:
-    responseSchema:
-      type: object
-      description: "Response object"
-      properties:
-        status:
-          type: integer
-          example: 200
-          default: 200
-        title:
-          type: string
-          example: "Access granted"
-          default: "Access granted"
   responses:
     Accepted:
       description: "Access granted."
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/responseSchema'
+            type: object
+            description: ""
+            properties:
+              status:
+                type: integer
+                example: 200
+                default: 200
+              title:
+                type: string
+                example: "Access granted"
+                default: "Access granted"
+
+    BadRequest:
+      description: "Request error."
+      content:
+        application/json:
+          schema:
+            type: object
+            description: ""
+            properties:
+              status:
+                type: integer
+                default: 400
+              title:
+                type: string
+                default: "Bad Request."
