@@ -1,6 +1,7 @@
 package com.testco.intunewebapp.config.handler;
 
-import com.testco.intunewebapp.model.response.UnAuthorizedAccess;
+
+import com.testco.iw.models.Forbidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +29,7 @@ public class IntuneAuthenticationFailureFilter {
             LOGGER.severe(request.getHeader("Authorization"));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            writeErrorResponse(response, new UnAuthorizedAccess());
+            writeErrorResponse(response, new Forbidden());
             LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
        }));
     }

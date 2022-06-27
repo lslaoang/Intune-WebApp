@@ -1,6 +1,6 @@
 package com.testco.intunewebapp.config.handler;
 
-import com.testco.intunewebapp.model.response.AccessDenied;
+import com.testco.iw.models.AccessDenied;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
