@@ -16,11 +16,11 @@ paths:
         400:
           $ref: '#/components/responses/BadRequest'
         401:
-          description: "Access denied."
+          $ref: '#/components/responses/AccessDenied'
         403:
-          description: "Insufficient rights. You are not allowed to call this service."
+          $ref: '#/components/responses/ForbiddenAccess'
         500:
-          description: "Internal error."
+          $ref: '#/components/responses/InternalError'
 
 components:
   responses:
@@ -29,29 +29,86 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            description: ""
-            properties:
-              status:
-                type: integer
-                example: 200
-                default: 200
-              title:
-                type: string
-                example: "Access granted"
-                default: "Access granted"
+            $ref: '#/components/schemas/Accepted'
 
     BadRequest:
       description: "Request error."
       content:
         application/json:
           schema:
-            type: object
-            description: ""
-            properties:
-              status:
-                type: integer
-                default: 400
-              title:
-                type: string
-                default: "Bad Request."
+            $ref: '#/components/schemas/BadRequest'
+
+    AccessDenied:
+      description: "Access denied."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessDenied'
+
+    ForbiddenAccess:
+      description: "Access forbidden. Not enough rights."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+
+    InternalError:
+      description: "Internal Error occured."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalError'
+
+  schemas:
+    Accepted:
+      type: object
+      description: "Accepted"
+      properties:
+          status:
+            type: integer
+            example: 200
+            default: 200
+          title:
+            type: string
+            example: "Access granted"
+            default: "Access granted"
+    BadRequest:
+      type: object
+      description: "Something wrong with the request."
+      properties:
+        status:
+          type: integer
+          default: 400
+        title:
+          type: string
+          default: "Bad Request."
+    AccessDenied:
+      type: object
+      description: "Access denied."
+      properties:
+        status:
+          type: integer
+          default: 401
+        title:
+          type: string
+          default: "Access denied."
+    Forbidden:
+      type: object
+      description: "Forbidden access."
+      properties:
+        status:
+          type: integer
+          default: 403
+        title:
+          type: string
+          default: "Forbidden access. Insufficient rights."
+    InternalError:
+      type: object
+      description: "Internal error occurred."
+      properties:
+        status:
+          type: integer
+          default: 500
+        title:
+          type: string
+          default: "Internal error occurred."
