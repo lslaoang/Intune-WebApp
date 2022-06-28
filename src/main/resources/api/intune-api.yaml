@@ -1,13 +1,22 @@
 openapi: 3.0.3
 info:
-  title: Web App API
-  description: Web App API
+  title: Intune Adapter
+  description: Web application that will serve as verification steps using Azrure AD
   version: 1.0.0
 servers:
   - url:  https://testco-app.azurewebsites.net
+
+tags:
+  - name: Verify
+    description: Endpoint for verifying client
+  - name: Check Payload
+    description: Endpoint for checking of payload sent by the client
+
 paths:
   /verify:
     get:
+      tags:
+      - Verify
       summary: "Verify token provided by the client"
       operationId: "verify"
       responses:
