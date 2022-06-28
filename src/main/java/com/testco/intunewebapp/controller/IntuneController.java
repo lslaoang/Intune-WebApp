@@ -2,9 +2,9 @@ package com.testco.intunewebapp.controller;
 
 import com.testco.intunewebapp.service.ResourceService;
 import com.testco.intunewebapp.service.VerifyService;
-import com.testco.iw.api.UploadFileApi;
-import com.testco.iw.api.VerifyApi;
+import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.Accepted;
+import com.testco.iw.models.FileUpload;
 import com.testco.iw.models.Forbidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("${api.base-path}")
-public class IntuneController implements VerifyApi, UploadFileApi {
+public class IntuneController implements IntuneApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntuneController.class);
 
@@ -25,6 +25,11 @@ public class IntuneController implements VerifyApi, UploadFileApi {
     public IntuneController(VerifyService verifyService, ResourceService resourceService) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
+    }
+
+    @Override
+    public ResponseEntity<Accepted> uploadFile(FileUpload body) {
+        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
 
     @Override
@@ -39,8 +44,4 @@ public class IntuneController implements VerifyApi, UploadFileApi {
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
 
-    @Override
-    public ResponseEntity<Accepted> uploadFile() {
-        return null;
-    }
 }
