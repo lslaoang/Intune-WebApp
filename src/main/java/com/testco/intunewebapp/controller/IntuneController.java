@@ -1,9 +1,12 @@
 package com.testco.intunewebapp.controller;
 
 import com.testco.intunewebapp.service.ResourceService;
+import com.testco.intunewebapp.service.VerifyGroupException;
 import com.testco.intunewebapp.service.VerifyService;
+import com.testco.intunewebapp.service.recieve.FileCheck;
 import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.Accepted;
+import com.testco.iw.models.BadRequest;
 import com.testco.iw.models.FileUpload;
 import com.testco.iw.models.Forbidden;
 import org.slf4j.Logger;
@@ -21,23 +24,34 @@ public class IntuneController implements IntuneApi {
 
     private final VerifyService verifyService;
     private final ResourceService resourceService;
+    private final FileCheck fileCheck;
 
-    public IntuneController(VerifyService verifyService, ResourceService resourceService) {
+    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
+        this.fileCheck = fileCheck;
     }
 
     @Override
     public ResponseEntity<Accepted> uploadFile(FileUpload body) {
+        try {
+            resourceService.checkResource();
+            verifyService.authorize();
+        } catch (VerifyGroupException e) {
+            LOGGER.warn("Authorization check failed. {}", e.getMessage());
+            return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
+        }
+        if(!fileCheck.validUpload(body)){
+            return new ResponseEntity(new BadRequest(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
 
     @Override
     public ResponseEntity<Accepted> verify() {
         try {
-            resourceService.checkResource();
             verifyService.authorize();
-        } catch (RuntimeException e) {
+        } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
             return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
         }
