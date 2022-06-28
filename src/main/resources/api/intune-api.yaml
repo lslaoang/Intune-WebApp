@@ -9,8 +9,8 @@ servers:
 tags:
   - name: Verify
     description: Endpoint for verifying client
-  - name: Check Payload
-    description: Endpoint for checking of payload sent by the client
+  - name: Upload file
+    description: Endpoint for checking / receiveing of payload sent by the client
 
 paths:
   /verify:
@@ -19,6 +19,23 @@ paths:
       - Verify
       summary: "Verify token provided by the client"
       operationId: "verify"
+      responses:
+        200:
+          $ref: '#/components/responses/Accepted'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/AccessDenied'
+        403:
+          $ref: '#/components/responses/ForbiddenAccess'
+        500:
+          $ref: '#/components/responses/InternalError'
+  /upload-file:
+    post:
+      tags:
+        - Upload file
+      summary: "Receive uploaded file from client"
+      operationId: "uploadFile"
       responses:
         200:
           $ref: '#/components/responses/Accepted'
