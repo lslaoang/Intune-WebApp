@@ -13,12 +13,16 @@ tags:
     description: Endpoint for checking / receiveing of payload sent by the client
 
 paths:
-  /verify:
+  /intune/verify:
     get:
       tags:
       - Verify
       summary: "Verify token provided by the client"
       operationId: "verify"
+
+      security:
+        - bearerAuth: [ ]
+
       responses:
         200:
           $ref: '#/components/responses/Accepted'
@@ -30,14 +34,25 @@ paths:
           $ref: '#/components/responses/ForbiddenAccess'
         500:
           $ref: '#/components/responses/InternalError'
-  /upload-file:
+
+  /intune/upload-file:
     post:
       tags:
         - Upload file
       summary: "Receive uploaded file from client"
+      description: "Check the validity of the token and verify the uploaded file"
       operationId: "uploadFile"
+
+      security:
+        - bearerAuth: []
+
       requestBody:
-        $ref: '#/components/schemas/FileUpload'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+              
       responses:
         200:
           $ref: '#/components/responses/Accepted'
