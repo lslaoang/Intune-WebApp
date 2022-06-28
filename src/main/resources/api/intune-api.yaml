@@ -36,6 +36,8 @@ paths:
         - Upload file
       summary: "Receive uploaded file from client"
       operationId: "uploadFile"
+      requestBody:
+        $ref: '#/components/schemas/FileUpload'
       responses:
         200:
           $ref: '#/components/responses/Accepted'
@@ -86,6 +88,27 @@ components:
             $ref: '#/components/schemas/InternalError'
 
   schemas:
+    FileUpload:
+      type: object
+      description: "Uploaded file"
+      required:
+        - file
+        - metadata
+      properties:
+        file:
+          type: string
+          example: "byte64encodedString"
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+    Metadata:
+      type: object
+      description: "Information about the file sent"
+      properties:
+        name:
+          type: string
+        copyOfOriginal:
+          type: boolean
+
     Accepted:
       type: object
       description: "Accepted"
