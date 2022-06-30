@@ -4,6 +4,7 @@ import com.testco.intunewebapp.service.ResourceService;
 import com.testco.intunewebapp.service.VerifyGroupException;
 import com.testco.intunewebapp.service.VerifyService;
 import com.testco.intunewebapp.service.recieve.FileCheck;
+import com.testco.intunewebapp.service.version.AppVersionService;
 import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.Accepted;
 import com.testco.iw.models.BadRequest;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("${api.base-path}")
 public class IntuneController implements IntuneApi {
@@ -25,11 +28,15 @@ public class IntuneController implements IntuneApi {
     private final VerifyService verifyService;
     private final ResourceService resourceService;
     private final FileCheck fileCheck;
+    private final HttpServletRequest request;
+    private final AppVersionService appVersionService;
 
-    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck) {
+    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, AppVersionService appVersionService) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
         this.fileCheck = fileCheck;
+        this.request = request;
+        this.appVersionService = appVersionService;
     }
 
     @Override
@@ -50,6 +57,14 @@ public class IntuneController implements IntuneApi {
     @Override
     public ResponseEntity<Accepted> verify() {
         try {
+
+            if( !appVersionService.isCorrectVersion(request)){
+                LOGGER.warn("Outdated application version. Please update.");
+                Forbidden forbidden = new Forbidden();
+                forbidden.setTitle("You are using unsupported version of application.");
+                return new ResponseEntity(forbidden, HttpStatus.FORBIDDEN);
+            }
+
             verifyService.authorize();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
