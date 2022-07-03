@@ -7,6 +7,9 @@ api:
 
 app:
   allowed-group: "IT"
+  version:
+    ios: "1.2.1"
+    andriod: "1.2.1"
 
 server:
   port: 8088
