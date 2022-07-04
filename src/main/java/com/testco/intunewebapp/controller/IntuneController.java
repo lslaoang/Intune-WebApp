@@ -4,6 +4,7 @@ import com.testco.intunewebapp.service.ResourceService;
 import com.testco.intunewebapp.service.VerifyGroupException;
 import com.testco.intunewebapp.service.VerifyService;
 import com.testco.intunewebapp.service.recieve.FileCheck;
+import com.testco.intunewebapp.service.version.AppVersionException;
 import com.testco.intunewebapp.service.version.AppVersionService;
 import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.Accepted;
@@ -57,14 +58,14 @@ public class IntuneController implements IntuneApi {
     @Override
     public ResponseEntity<Accepted> verify() {
         try {
+            appVersionService.verifyVersion(request);
+        } catch (AppVersionException e){
+            BadRequest badRequest = new BadRequest();
+            badRequest.setTitle("Bad request. " + e.getMessage());
+            return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
+        }
 
-            if( !appVersionService.isCorrectVersion(request)){
-                LOGGER.warn("Outdated application version. Please update.");
-                Forbidden forbidden = new Forbidden();
-                forbidden.setTitle("You are using unsupported version of application.");
-                return new ResponseEntity(forbidden, HttpStatus.FORBIDDEN);
-            }
-
+        try {
             verifyService.authorize();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());

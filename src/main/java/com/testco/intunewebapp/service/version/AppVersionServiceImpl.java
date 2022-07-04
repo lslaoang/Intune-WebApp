@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -23,7 +24,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     private String APP_VERSION_ANDROID;
 
     @Override
-    public boolean isCorrectVersion(HttpServletRequest request) {
+    public void verifyVersion(HttpServletRequest request) {
 
         LOGGER.info("Checking application version...");
         Map<String, String> appVersionMap = new HashMap<>();
@@ -32,19 +33,19 @@ public class AppVersionServiceImpl implements AppVersionService {
 
         String requestVersion, requestOs;
         try {
-            requestOs = request.getHeader(APP_OS_HEADER);
-            requestVersion = request.getHeader(APP_VERSION_HEADER);
+            requestOs = request.getHeader(APP_OS_HEADER).toLowerCase(Locale.ROOT);
+            requestVersion = request.getHeader(APP_VERSION_HEADER).toLowerCase(Locale.ROOT);
+            System.out.println(requestVersion);
 
-            String appVersion = appVersionMap.get(requestOs.toLowerCase());
+            String appVersion = appVersionMap.get(requestOs);
             if (!appVersion.equals(requestVersion)) {
                 LOGGER.warning(String.format("Invalid application version. Application should be %s version.", appVersion));
-                return false;
+                throw new AppVersionException("Invalid version.");
             }
         } catch (NullPointerException e) {
-            LOGGER.severe("Application version or operating system not detected." + e.getMessage());
-            return false;
+            LOGGER.severe("Application version or operating system not detected." );
+            throw new AppVersionException("Required header not found.");
         }
         LOGGER.info("Valid application version.");
-        return true;
     }
 }
