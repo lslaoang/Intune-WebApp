@@ -14,10 +14,10 @@ logging:
   level:
     org:
       springframework:
-        security: TRACE
+        security: DEBUG
         web:
           filter:
-            CommonsRequestLoggingFilter: TRACE
+            CommonsRequestLoggingFilter: DEBUG
     com:
       azure:
         spring: TRACE

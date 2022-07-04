@@ -35,7 +35,6 @@ public class AppVersionServiceImpl implements AppVersionService {
         try {
             requestOs = request.getHeader(APP_OS_HEADER).toLowerCase(Locale.ROOT);
             requestVersion = request.getHeader(APP_VERSION_HEADER).toLowerCase(Locale.ROOT);
-            System.out.println(requestVersion);
 
             String appVersion = appVersionMap.get(requestOs);
             if (!appVersion.equals(requestVersion)) {
