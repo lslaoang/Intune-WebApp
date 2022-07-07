@@ -1,4 +1,4 @@
-package com.testco.intunewebapp.config.handler;
+package com.testco.intunewebapp.handler;
 
 import com.testco.iw.models.AccessDenied;
 import org.springframework.http.HttpStatus;
