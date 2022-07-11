@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
-public class AppVersionServiceImpl implements AppVersionService {
+public class VersionServiceHeaderImpl implements VersionServiceHeader {
 
-    private static final Logger LOGGER = Logger.getLogger(AppVersionService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VersionServiceHeader.class.getName());
 
     protected final String APP_VERSION_HEADER = "X-UBS-APP-VERSION";
     protected final String APP_OS_HEADER = "X-UBS-APP-OS";
@@ -39,11 +39,11 @@ public class AppVersionServiceImpl implements AppVersionService {
             String appVersion = appVersionMap.get(requestOs);
             if (!appVersion.equals(requestVersion)) {
                 LOGGER.warning(String.format("Invalid application version. Application should be %s version.", appVersion));
-                throw new AppVersionException("Invalid version.");
+                throw new VersionHeaderException("Invalid version.");
             }
         } catch (NullPointerException e) {
             LOGGER.severe("Application version or operating system not detected." );
-            throw new AppVersionException("Required header not found.");
+            throw new VersionHeaderException("Required header not found.");
         }
         LOGGER.info("Valid application version.");
     }

@@ -4,8 +4,8 @@ import com.testco.intunewebapp.service.ResourceService;
 import com.testco.intunewebapp.service.VerifyGroupException;
 import com.testco.intunewebapp.service.VerifyService;
 import com.testco.intunewebapp.service.recieve.FileCheck;
-import com.testco.intunewebapp.service.version.AppVersionException;
-import com.testco.intunewebapp.service.version.AppVersionService;
+import com.testco.intunewebapp.service.version.VersionHeaderException;
+import com.testco.intunewebapp.service.version.VersionServiceHeader;
 import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.Accepted;
 import com.testco.iw.models.BadRequest;
@@ -30,14 +30,14 @@ public class IntuneController implements IntuneApi {
     private final ResourceService resourceService;
     private final FileCheck fileCheck;
     private final HttpServletRequest request;
-    private final AppVersionService appVersionService;
+    private final VersionServiceHeader versionServiceHeader;
 
-    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, AppVersionService appVersionService) {
+    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, VersionServiceHeader versionServiceHeader) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
         this.fileCheck = fileCheck;
         this.request = request;
-        this.appVersionService = appVersionService;
+        this.versionServiceHeader = versionServiceHeader;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class IntuneController implements IntuneApi {
     @Override
     public ResponseEntity<Accepted> verify() {
         try {
-            appVersionService.verifyVersion(request);
-        } catch (AppVersionException e){
+            versionServiceHeader.verifyVersion(request);
+        } catch (VersionHeaderException e){
             BadRequest badRequest = new BadRequest();
             badRequest.setTitle("Bad request. " + e.getMessage());
             return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
