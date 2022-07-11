@@ -20,6 +20,13 @@ paths:
       summary: "Verify token provided by the client"
       operationId: "verify"
 
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verify'
+
       security:
         - bearerAuth: [ ]
 
@@ -28,6 +35,8 @@ paths:
           $ref: '#/components/responses/Accepted'
         400:
           $ref: '#/components/responses/BadRequest'
+        402:
+          $ref: '#/components/responses/NotSupported'
         401:
           $ref: '#/components/responses/AccessDenied'
         403:
@@ -109,6 +118,20 @@ components:
             $ref: '#/components/schemas/InternalError'
 
   schemas:
+    Verify:
+      type: object
+      description: "Information about request origin."
+      required:
+        - appOs
+        - appVersion
+      properties:
+        appOs:
+          type: string
+          example: "iOs"
+        appVersion:
+          type: string
+          example: "2.0.0"
+
     FileUpload:
       type: object
       description: "Uploaded file"
@@ -182,3 +205,13 @@ components:
         title:
           type: string
           default: "Internal error occurred."
+    NotSupported:
+      type: object
+      description: "Version not supported."
+      properties:
+        status:
+          type: integer
+          default: 402
+        title:
+          type: string
+          default: "You are using unsupported version of this app."

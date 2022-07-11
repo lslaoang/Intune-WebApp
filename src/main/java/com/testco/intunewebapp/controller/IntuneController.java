@@ -4,13 +4,11 @@ import com.testco.intunewebapp.service.ResourceService;
 import com.testco.intunewebapp.service.VerifyGroupException;
 import com.testco.intunewebapp.service.VerifyService;
 import com.testco.intunewebapp.service.recieve.FileCheck;
-import com.testco.intunewebapp.service.version.VersionHeaderException;
-import com.testco.intunewebapp.service.version.VersionServiceHeader;
+import com.testco.intunewebapp.service.version.VersionBodyService;
+import com.testco.intunewebapp.service.version.VersionException;
+import com.testco.intunewebapp.service.version.VersionHeaderService;
 import com.testco.iw.api.IntuneApi;
-import com.testco.iw.models.Accepted;
-import com.testco.iw.models.BadRequest;
-import com.testco.iw.models.FileUpload;
-import com.testco.iw.models.Forbidden;
+import com.testco.iw.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,14 +28,16 @@ public class IntuneController implements IntuneApi {
     private final ResourceService resourceService;
     private final FileCheck fileCheck;
     private final HttpServletRequest request;
-    private final VersionServiceHeader versionServiceHeader;
+    private final VersionHeaderService versionHeaderService;
+    private final VersionBodyService versionBodyService;
 
-    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, VersionServiceHeader versionServiceHeader) {
+    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, VersionHeaderService versionHeaderService, VersionBodyService versionBodyService) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
         this.fileCheck = fileCheck;
         this.request = request;
-        this.versionServiceHeader = versionServiceHeader;
+        this.versionHeaderService = versionHeaderService;
+        this.versionBodyService = versionBodyService;
     }
 
     @Override
@@ -56,10 +56,29 @@ public class IntuneController implements IntuneApi {
     }
 
     @Override
+    public ResponseEntity<Accepted> verify(Verify body) {
+        try {
+            versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
+        } catch (VersionException e){
+            NotSupported notSupported = new NotSupported();
+            notSupported.setTitle("Bad request. " + e.getMessage());
+            return new ResponseEntity(notSupported, HttpStatus.valueOf(402));
+        }
+
+        try {
+            verifyService.authorize();
+        } catch (VerifyGroupException e) {
+            LOGGER.warn("Authorization check failed. {}", e.getMessage());
+            return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+    }
+
+    @Deprecated
     public ResponseEntity<Accepted> verify() {
         try {
-            versionServiceHeader.verifyVersion(request);
-        } catch (VersionHeaderException e){
+            versionHeaderService.verifyVersion(request);
+        } catch (VersionException e){
             BadRequest badRequest = new BadRequest();
             badRequest.setTitle("Bad request. " + e.getMessage());
             return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
