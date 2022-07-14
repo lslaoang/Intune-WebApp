@@ -49,7 +49,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
     }
 
     private void validateVersion(String version){
-        final String VALID_VERSION_REGEX = "^[1-9]\\d*(\\.[1-9]\\d*){0,3}$";
+        final String VALID_VERSION_REGEX = "^[1-9]\\d*(\\.[0-9]\\d*){0,3}$";
         if(!version.matches(VALID_VERSION_REGEX)){
             throw new VersionException("Version format is not valid.");
         }
