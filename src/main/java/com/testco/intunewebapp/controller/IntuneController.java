@@ -49,7 +49,7 @@ public class IntuneController implements IntuneApi {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
             return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
         }
-        if(!fileCheck.validUpload(body)){
+        if (!fileCheck.validUpload(body)) {
             return new ResponseEntity(new BadRequest(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
@@ -59,7 +59,7 @@ public class IntuneController implements IntuneApi {
     public ResponseEntity<Accepted> verify(Verify body) {
         try {
             versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
-        } catch (VersionException e){
+        } catch (VersionException e) {
             NotSupported notSupported = new NotSupported();
             notSupported.setTitle("Bad request. " + e.getMessage());
             return new ResponseEntity(notSupported, HttpStatus.valueOf(402));
@@ -78,7 +78,7 @@ public class IntuneController implements IntuneApi {
     public ResponseEntity<Accepted> verify() {
         try {
             versionHeaderService.verifyVersion(request);
-        } catch (VersionException e){
+        } catch (VersionException e) {
             BadRequest badRequest = new BadRequest();
             badRequest.setTitle("Bad request. " + e.getMessage());
             return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
