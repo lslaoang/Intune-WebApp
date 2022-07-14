@@ -23,6 +23,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
 
         try{
             LOGGER.info("Checking application version...");
+            validateVersion(reqAppVersion);
 
             String okVersionAndroid = majorVersion(APP_VERSION_ANDROID);
             String okVersionIos = majorVersion(APP_VERSION_IOS);
@@ -31,7 +32,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
             appVersionMap.put("ios", okVersionIos);
             appVersionMap.put("android", okVersionAndroid);
 
-            if(!appVersionMap.get(reqAppOs).equalsIgnoreCase(reqAppVersion)){
+            if(!appVersionMap.get(reqAppOs).equals(majorVersion(reqAppVersion))){
                 LOGGER.severe("Version not compatible");
                 throw new VersionException("Version not accepted.");
             }
@@ -43,7 +44,16 @@ public class VersionBodyServiceImpl implements VersionBodyService{
         LOGGER.info("Version compatible.");
     }
 
-    public String majorVersion(String version){
-        return version.length() > 2 ? version : version.substring(0,2);
+    private String majorVersion(String version){
+        return version.length() > 2 ? version.substring(0, version.indexOf(".")) : version;
     }
+
+    private void validateVersion(String version){
+        final String VALID_VERSION_REGEX = "^[1-9]\\d*(\\.[1-9]\\d*){0,3}$";
+        if(!version.matches(VALID_VERSION_REGEX)){
+            throw new VersionException("Version format is not valid.");
+        }
+
+    }
+
 }
