@@ -150,8 +150,13 @@ components:
       properties:
         name:
           type: string
+          example: "SampleFileName"
         copyOfOriginal:
           type: boolean
+          default: false
+        numberOfCopies:
+          type: integer
+          default: 1
 
     Accepted:
       type: object

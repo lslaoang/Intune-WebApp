@@ -1,9 +1,13 @@
 api:
   base-path: /api/v1
-  provider:
-    resource:
-      base-uri: http://localhost:8181
-      endpoint: /api/v1/resource
+
+
+provider:
+  apigee:
+    base-uri: http://localhost:8088
+    verify: /api/v1/verify
+    file-upload: /api/v1/file-upload
+
 
 app:
   allowed-group: "IT"

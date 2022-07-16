@@ -25,7 +25,7 @@ public class ApigeeController {
         this.request = request;
     }
 
-    @GetMapping("/apigee")
+    @GetMapping("/api/v1/verify")
     public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) throws UnknownHostException {
 
         if (isInternalRequest()) {
@@ -36,7 +36,7 @@ public class ApigeeController {
 
     }
 
-    @PostMapping("/file-upload")
+    @PostMapping("/api/v1/file-upload")
     public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
 
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);

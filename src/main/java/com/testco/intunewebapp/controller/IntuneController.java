@@ -10,6 +10,7 @@ import com.testco.intunewebapp.service.version.VersionBodyService;
 import com.testco.intunewebapp.service.version.VersionException;
 import com.testco.intunewebapp.service.version.VersionHeaderService;
 import com.testco.iw.api.IntuneApi;
+import com.testco.iw.models.InternalError;
 import com.testco.iw.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,10 +64,10 @@ public class IntuneController implements IntuneApi {
         } catch (UploadErrorException e) {
             return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new Accepted(), HttpStatus.CREATED);
     }
 
-//    @Override
+    @Override
     public ResponseEntity<Accepted> verify(AppInformation body) {
         try {
             versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());

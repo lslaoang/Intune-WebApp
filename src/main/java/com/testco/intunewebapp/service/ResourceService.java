@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
@@ -19,13 +20,11 @@ public class ResourceService {
     private final WebClient webClient;
     private final HttpServletRequest servletRequest;
 
-    @Value("${api.provider.resource.base-uri}")
+    @Value("${provider.apigee.base-uri}")
     String resourceBaseUri;
-    @Value("${api.provider.resource.endpoint}")
-    String resourceEndpoint;
 
-    @Value("${server.port}")
-    String hostBaseUrl;
+    @Value("${provider.apigee.verify}")
+    String resourceEndpoint;
 
     public ResourceService(WebClient webClient, HttpServletRequest servletRequest) {
         this.webClient = webClient;
@@ -38,12 +37,11 @@ public class ResourceService {
         try {
             String token = webClient
                     .get()
-//                    .uri(new URI(resourceBaseUri + resourceEndpoint))
-                    .uri("http://localhost:" + hostBaseUrl + "/apigee")
+                    .uri(new URI(resourceBaseUri + resourceEndpoint))
 //                    .attributes(clientRegistrationId("testco-res")) //When calling outside instances, specify the clientRegistrationId for the called endpoint
                     .attributes(clientRegistrationId("testco-webapp")) //Within app since Spring security will check the validity of the token for this instance
                     .header("X-WEBAPP-SOURCE", "INTERNAL")
-                    .header("X-WEBAPP-ADDRESS",servletRequest.getRemoteAddr())
+                    .header("X-WEBAPP-ADDRESS", servletRequest.getRemoteAddr())
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
