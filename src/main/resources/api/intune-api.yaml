@@ -25,7 +25,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Verify'
+                $ref: '#/components/schemas/AppInformation'
 
       security:
         - bearerAuth: [ ]
@@ -118,7 +118,7 @@ components:
             $ref: '#/components/schemas/InternalError'
 
   schemas:
-    Verify:
+    AppInformation:
       type: object
       description: "Information about request origin."
       required:
@@ -150,8 +150,13 @@ components:
       properties:
         name:
           type: string
+          example: "SampleFileName"
         copyOfOriginal:
           type: boolean
+          default: false
+        numberOfCopies:
+          type: integer
+          default: 1
 
     Accepted:
       type: object
