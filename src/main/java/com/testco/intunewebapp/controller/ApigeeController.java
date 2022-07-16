@@ -1,6 +1,5 @@
 package com.testco.intunewebapp.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +13,12 @@ public class ApigeeController {
 
     static final String UBS_INTERNAL = "X-WEBAPP-SOURCE";
     static final String UBS_INTERNAL_VALUE = "INTERNAL";
+    
+    private final HttpServletRequest request;
 
-    @Autowired
-    private HttpServletRequest request;
+    public ApigeeController(HttpServletRequest request) {
+        this.request = request;
+    }
 
     @GetMapping("/apigee")
     public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) throws UnknownHostException {
