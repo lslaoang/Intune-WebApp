@@ -19,7 +19,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${provider.apigee.base-uri}")
     String resourceBaseUri;
 
-    @Value("${provider.apigee.verify}")
+    @Value("${provider.apigee.file-upload}")
     String resourceEndpoint;
 
 
@@ -34,9 +34,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         try {
             int numberOfCopies = fileUpload.getMetadata().getNumberOfCopies();
 
-            int counter = 0;
-            while(counter < numberOfCopies){
-                LOGGER.info("Sending file(s) to resource " + counter + "/" + numberOfCopies);
+            int counter = 1;
+            while(counter <= numberOfCopies){
+                LOGGER.info("Sending file(s) to resource " + counter  + "/" + numberOfCopies);
                 sendFile(fileUpload);
                 counter++;
             }

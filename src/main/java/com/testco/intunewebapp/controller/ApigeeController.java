@@ -36,8 +36,7 @@ public class ApigeeController {
 
     @PostMapping("/api/v1/file-upload")
     public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
-        fileUpload.getMetadata().getName();
-        System.out.println("Filename " + fileUpload.getMetadata().getName());
+        System.out.println("Filename ");
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
 
     }
