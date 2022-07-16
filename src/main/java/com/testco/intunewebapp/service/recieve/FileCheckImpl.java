@@ -24,9 +24,10 @@ public class FileCheckImpl implements  FileCheck{
             metadata =  fileUpload.getMetadata();
             LOGGER.info("Metadata is present: " + metadata);
         }catch (RuntimeException e){
+            LOGGER.severe("Metadata validation failed. " + e);
             return false;
         }
-
+        LOGGER.info("Metadata is valid.");
         return true;
     }
 
