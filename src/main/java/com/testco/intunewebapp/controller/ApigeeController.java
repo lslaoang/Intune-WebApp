@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.UnknownHostException;
 
 @RestController
 public class ApigeeController {
@@ -26,19 +25,19 @@ public class ApigeeController {
     }
 
     @GetMapping("/api/v1/verify")
-    public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) throws UnknownHostException {
+    public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
 
         if (isInternalRequest()) {
             return oAuth2AuthorizedClient.getAccessToken().getTokenValue();
         } else {
             throw new RuntimeException("Required attribute not found.");
         }
-
     }
 
     @PostMapping("/api/v1/file-upload")
     public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
-
+        fileUpload.getMetadata().getName();
+        System.out.println("Filename " + fileUpload.getMetadata().getName());
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
 
     }

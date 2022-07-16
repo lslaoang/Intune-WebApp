@@ -30,15 +30,14 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public void uploadToResource(FileUpload fileUpload) {
+
         try {
-            webClient
-                    .post()
-                    .uri(resourceBaseUri + resourceEndpoint)
-                    .attributes(clientRegistrationId("testco-webapp"))
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-            LOGGER.info("Uploading file to resource successful!");
+            int numberOfCopies = fileUpload.getMetadata().getNumberOfCopies();
+
+            while(numberOfCopies > 0){
+                sendFile(fileUpload);
+                numberOfCopies--;
+            }
 
         }catch (RuntimeException e){
             LOGGER.severe("Error occurred while uploading file to resource.");
@@ -46,5 +45,16 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
 
         LOGGER.info("Uploaded successful!");
+    }
+
+    private void sendFile(FileUpload fileUpload){
+        webClient
+                .post()
+                .uri(resourceBaseUri + resourceEndpoint)
+                .attributes(clientRegistrationId("testco-webapp"))
+                .bodyValue(fileUpload)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }
