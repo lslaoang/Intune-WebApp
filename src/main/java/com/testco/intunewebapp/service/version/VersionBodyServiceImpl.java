@@ -23,7 +23,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
 
         try{
             LOGGER.info("Checking application version...");
-            validateVersion(appVersion);
+            validateVersionFormat(appVersion);
 
             String androidVersion = getMajorVersion(APP_VERSION_ANDROID);
             String iosVersion = getMajorVersion(APP_VERSION_IOS);
@@ -48,7 +48,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
         return version.length() > 2 ? version.substring(0, version.indexOf(".")) : version;
     }
 
-    private void validateVersion(String version){
+    private void validateVersionFormat(String version){
         final String VALID_VERSION_REGEX = "^[1-9]\\d*(\\.[0-9]\\d*){0,3}$";
         if(!version.matches(VALID_VERSION_REGEX)){
             throw new VersionException("Version format is not valid.");
