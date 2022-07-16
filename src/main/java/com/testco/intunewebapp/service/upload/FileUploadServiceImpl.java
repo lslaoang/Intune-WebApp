@@ -34,16 +34,17 @@ public class FileUploadServiceImpl implements FileUploadService {
         try {
             int numberOfCopies = fileUpload.getMetadata().getNumberOfCopies();
 
-            while(numberOfCopies > 0){
+            int counter = 0;
+            while(counter < numberOfCopies){
+                LOGGER.info("Sending file(s) to resource " + counter + "/" + numberOfCopies);
                 sendFile(fileUpload);
-                numberOfCopies--;
+                counter++;
             }
 
         }catch (RuntimeException e){
             LOGGER.severe("Error occurred while uploading file to resource.");
             throw new UploadErrorException("Uploading file(s) to resource failed." + e);
         }
-
         LOGGER.info("Uploaded successful!");
     }
 
