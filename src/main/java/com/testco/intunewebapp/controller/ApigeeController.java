@@ -1,8 +1,13 @@
 package com.testco.intunewebapp.controller;
 
+import com.testco.iw.models.Accepted;
+import com.testco.iw.models.FileUpload;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +18,7 @@ public class ApigeeController {
 
     static final String UBS_INTERNAL = "X-WEBAPP-SOURCE";
     static final String UBS_INTERNAL_VALUE = "INTERNAL";
-    
+
     private final HttpServletRequest request;
 
     public ApigeeController(HttpServletRequest request) {
@@ -31,9 +36,14 @@ public class ApigeeController {
 
     }
 
-    private Boolean isInternalRequest() throws UnknownHostException {
-//        String hostAddress = String.valueOf(InetAddress.getLocalHost().getHostAddress());
-//        String requestAddress = request.getLocalAddr();
+    @PostMapping("/file-upload")
+    public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
+
+        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+
+    }
+
+    private Boolean isInternalRequest() {
         return request.getHeader(UBS_INTERNAL).equals(UBS_INTERNAL_VALUE);
     }
 }
