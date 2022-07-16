@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Deprecated
 @Service
 public class VersionHeaderServiceImpl implements VersionHeaderService {
 

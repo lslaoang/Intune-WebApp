@@ -19,20 +19,20 @@ public class VersionBodyServiceImpl implements VersionBodyService{
     private String APP_VERSION_ANDROID;
 
     @Override
-    public void verifyVersion(String reqAppOs, String reqAppVersion) {
+    public void verifyVersion(String appOs, String appVersion) {
 
         try{
             LOGGER.info("Checking application version...");
-            validateVersion(reqAppVersion);
+            validateVersion(appVersion);
 
-            String okVersionAndroid = majorVersion(APP_VERSION_ANDROID);
-            String okVersionIos = majorVersion(APP_VERSION_IOS);
+            String androidVersion = getMajorVersion(APP_VERSION_ANDROID);
+            String iosVersion = getMajorVersion(APP_VERSION_IOS);
 
-            Map<String, String> appVersionMap = new HashMap<>();
-            appVersionMap.put("ios", okVersionIos);
-            appVersionMap.put("android", okVersionAndroid);
+            Map<String, String> versionMap = new HashMap<>();
+            versionMap.put("ios", iosVersion);
+            versionMap.put("android", androidVersion);
 
-            if(!appVersionMap.get(reqAppOs).equals(majorVersion(reqAppVersion))){
+            if(!versionMap.get(appOs).equals(getMajorVersion(appVersion))){
                 LOGGER.severe("Version not compatible");
                 throw new VersionException("Version not accepted.");
             }
@@ -44,7 +44,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
         LOGGER.info("Version compatible.");
     }
 
-    private String majorVersion(String version){
+    private String getMajorVersion(String version){
         return version.length() > 2 ? version.substring(0, version.indexOf(".")) : version;
     }
 
