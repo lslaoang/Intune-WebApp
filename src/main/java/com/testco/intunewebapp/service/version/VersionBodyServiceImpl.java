@@ -28,6 +28,7 @@ public class VersionBodyServiceImpl implements VersionBodyService{
             String androidVersion = getMajorVersion(APP_VERSION_ANDROID);
             String iosVersion = getMajorVersion(APP_VERSION_IOS);
 
+            //TODO: Create flexible approach
             Map<String, String> versionMap = new HashMap<>();
             versionMap.put("ios", iosVersion);
             versionMap.put("android", androidVersion);
