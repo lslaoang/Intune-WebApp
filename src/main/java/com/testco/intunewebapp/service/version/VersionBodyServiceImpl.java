@@ -3,7 +3,9 @@ package com.testco.intunewebapp.service.version;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -22,21 +24,15 @@ public class VersionBodyServiceImpl implements VersionBodyService{
     public void verifyVersion(String appOs, String appVersion) {
 
         try{
-            LOGGER.info("Checking application version...");
+            LOGGER.info("Checking application compatibility started.");
+
+            LOGGER.info("Validating version format ...");
             validateVersionFormat(appVersion);
 
-            String androidVersion = getMajorVersion(APP_VERSION_ANDROID);
-            String iosVersion = getMajorVersion(APP_VERSION_IOS);
+            LOGGER.info("Checking application version ...");
+            checkCompatibility(appOs, appVersion);
 
-            //TODO: Create flexible approach
-            Map<String, String> versionMap = new HashMap<>();
-            versionMap.put("ios", iosVersion);
-            versionMap.put("android", androidVersion);
 
-            if(!versionMap.get(appOs).equals(getMajorVersion(appVersion))){
-                LOGGER.severe("Version not compatible");
-                throw new VersionException("Version not accepted.");
-            }
 
         }catch (RuntimeException e){
             LOGGER.severe("Error occurred while checking version." + e);
@@ -55,6 +51,31 @@ public class VersionBodyServiceImpl implements VersionBodyService{
             throw new VersionException("Version format is not valid.");
         }
 
+    }
+
+    private void checkCompatibility(String appOs, String appVersion){
+        String androidVersion = getMajorVersion(APP_VERSION_ANDROID);
+        String iosVersion = getMajorVersion(APP_VERSION_IOS);
+
+        Map<String, List<String>> versionMap = new HashMap<>();
+        List<String> iosVersionList = new ArrayList<>();
+        iosVersionList.add(iosVersion);
+        iosVersionList.add("1.1.999999999999");
+        iosVersionList.add("1.2.3");
+
+        List<String> androidVersionList = new ArrayList<>();
+        androidVersionList.add(androidVersion);
+        androidVersionList.add("1.1.999999999999");
+        androidVersionList.add("1.2.3");
+
+
+        versionMap.put("ios", iosVersionList);
+        versionMap.put("android", androidVersionList);
+
+        if(!versionMap.get(appOs).contains(appVersion)){
+            LOGGER.severe("Version not compatible");
+            throw new VersionException("Version not accepted.");
+        }
     }
 
 }
