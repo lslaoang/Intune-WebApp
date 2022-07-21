@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -19,16 +20,16 @@ public class VersionHeaderServiceImpl implements VersionHeaderService {
     protected final String APP_OS_HEADER = "X-UBS-APP-OS";
 
     @Value("${app.version.ios}")
-    private String APP_VERSION_IOS;
+    private List<String> APP_VERSION_IOS;
 
     @Value("${app.version.android}")
-    private String APP_VERSION_ANDROID;
+    private List<String> APP_VERSION_ANDROID;
 
     @Override
     public void verifyVersion(HttpServletRequest request) {
 
         LOGGER.info("Checking application version...");
-        Map<String, String> appVersionMap = new HashMap<>();
+        Map<String, List<String>> appVersionMap = new HashMap<>();
         appVersionMap.put("ios", APP_VERSION_IOS);
         appVersionMap.put("android", APP_VERSION_ANDROID);
 
@@ -37,8 +38,8 @@ public class VersionHeaderServiceImpl implements VersionHeaderService {
             requestOs = request.getHeader(APP_OS_HEADER).toLowerCase(Locale.ROOT);
             requestVersion = request.getHeader(APP_VERSION_HEADER).toLowerCase(Locale.ROOT);
 
-            String appVersion = appVersionMap.get(requestOs);
-            if (!appVersion.equals(requestVersion)) {
+            List<String> appVersion = appVersionMap.get(requestOs);
+            if (!appVersion.contains(requestVersion)) {
                 LOGGER.warning(String.format("Invalid application version. Application should be %s version.", appVersion));
                 throw new VersionException("Invalid version.");
             }
