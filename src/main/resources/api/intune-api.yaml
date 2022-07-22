@@ -154,9 +154,24 @@ components:
         copyOfOriginal:
           type: boolean
           default: false
-        numberOfCopies:
-          type: integer
-          default: 1
+        country:
+          type: string
+          default: ph
+        copies:
+          type: array
+          items:
+            type: object
+            properties:
+              relationNumber:
+                type: string
+                example: 001
+              numberOfCopies:
+                type: integer
+                example: 1
+                default: 1
+              directProcessing:
+                type: boolean
+                default: false
 
     Accepted:
       type: object
