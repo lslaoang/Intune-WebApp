@@ -38,6 +38,7 @@ public class VersionBodyServiceImpl implements VersionBodyService {
         LOGGER.info("Version compatible.");
     }
 
+    @Deprecated
     private String getMajorVersion(String version) {
         return version.length() > 2 ? version.substring(0, version.indexOf(".")) : version;
     }
