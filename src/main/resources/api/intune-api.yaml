@@ -165,10 +165,6 @@ components:
               relationNumber:
                 type: string
                 example: 001
-              numberOfCopies:
-                type: integer
-                example: 1
-                default: 1
               directProcessing:
                 type: boolean
                 default: false
