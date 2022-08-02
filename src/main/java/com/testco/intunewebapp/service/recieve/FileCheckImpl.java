@@ -15,7 +15,8 @@ public class FileCheckImpl implements  FileCheck{
         if (fileUpload == null){
             return false;
         }
-        System.out.println(literalShit("shit it is"));
+        System.out.println(literalShit(1));
+        System.out.println(literalShit(11));
 
         if (fileUpload.getFile().isEmpty()){
             return false;
@@ -32,8 +33,11 @@ public class FileCheckImpl implements  FileCheck{
         return true;
     }
 
-    private String literalShit(String shit){
-        return "aShit" + shit;
+    private String literalShit(int testNum){
+        if (testNum > 10) {
+            return "Good";
+        }
+        return "Fail";
     }
 
 }
