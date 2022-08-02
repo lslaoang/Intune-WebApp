@@ -15,6 +15,7 @@ public class FileCheckImpl implements  FileCheck{
         if (fileUpload == null){
             return false;
         }
+        System.out.println(literalShit("shit it is"));
 
         if (fileUpload.getFile().isEmpty()){
             return false;
@@ -29,6 +30,10 @@ public class FileCheckImpl implements  FileCheck{
         }
         LOGGER.info("Metadata is valid.");
         return true;
+    }
+
+    private String literalShit(String shit){
+        return "aShit" + shit;
     }
 
 }

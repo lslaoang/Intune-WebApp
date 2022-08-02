@@ -32,7 +32,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     public void uploadToResource(FileUpload fileUpload) {
 
         try {
-            int numberOfCopies = fileUpload.getMetadata().getNumberOfCopies();
+            int numberOfCopies = fileUpload.getMetadata().getCopies().size();
 
             int counter = 1;
             while(counter <= numberOfCopies){
