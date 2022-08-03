@@ -148,9 +148,12 @@ components:
       type: object
       description: "Information about the file sent"
       properties:
-        name:
+        businessDomain:
           type: string
-          example: "SampleFileName"
+          example: "WM"
+        documentDomain:
+          type: string
+          example: "011"
         copyOfOriginal:
           type: boolean
           default: false
