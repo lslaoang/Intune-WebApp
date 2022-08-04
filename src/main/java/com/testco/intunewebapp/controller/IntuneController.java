@@ -1,11 +1,10 @@
 package com.testco.intunewebapp.controller;
 
 import com.testco.intunewebapp.service.ResourceService;
-import com.testco.intunewebapp.service.VerifyGroupException;
-import com.testco.intunewebapp.service.VerifyService;
 import com.testco.intunewebapp.service.recieve.FileCheck;
 import com.testco.intunewebapp.service.upload.FileUploadService;
 import com.testco.intunewebapp.service.upload.UploadErrorException;
+import com.testco.intunewebapp.service.verify.VerifyGroupException;
 import com.testco.intunewebapp.service.version.VersionBodyService;
 import com.testco.intunewebapp.service.version.VersionException;
 import com.testco.intunewebapp.service.version.VersionHeaderService;
@@ -27,7 +26,7 @@ public class IntuneController implements IntuneApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntuneController.class);
 
-    private final VerifyService verifyService;
+    private final VersionBodyService.VerifyService verifyService;
     private final ResourceService resourceService;
     private final FileCheck fileCheck;
     private final HttpServletRequest request;
@@ -35,7 +34,7 @@ public class IntuneController implements IntuneApi {
     private final VersionBodyService versionBodyService;
     private final FileUploadService fileUploadService;
 
-    public IntuneController(VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, VersionHeaderService versionHeaderService, VersionBodyService versionBodyService, FileUploadService fileUploadService) {
+    public IntuneController(VersionBodyService.VerifyService verifyService, ResourceService resourceService, FileCheck fileCheck, HttpServletRequest request, VersionHeaderService versionHeaderService, VersionBodyService versionBodyService, FileUploadService fileUploadService) {
         this.verifyService = verifyService;
         this.resourceService = resourceService;
         this.fileCheck = fileCheck;

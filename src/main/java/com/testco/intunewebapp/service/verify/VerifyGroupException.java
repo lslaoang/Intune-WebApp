@@ -1,4 +1,4 @@
-package com.testco.intunewebapp.service;
+package com.testco.intunewebapp.service.verify;
 
 public class VerifyGroupException extends RuntimeException{
     public VerifyGroupException() {
