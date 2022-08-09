@@ -1,13 +1,16 @@
 package com.testco.intunewebapp.controller;
 
+import com.google.gson.Gson;
+import com.testco.intunewebapp.model.UploadRequest;
+import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.iw.models.Accepted;
-import com.testco.iw.models.FileUpload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +38,8 @@ public class ApigeeController {
     }
 
     @PostMapping("/api/v1/file-upload")
-    public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
-        System.out.println("Filename ");
+    public ResponseEntity<Accepted> uploadFile(@RequestBody UploadRequest UploadRequest) {
+        System.out.println("Full Request: "  + new Gson().toJson(UploadRequest));
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
 
     }

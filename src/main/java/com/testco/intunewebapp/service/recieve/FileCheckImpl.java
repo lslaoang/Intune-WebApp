@@ -15,9 +15,6 @@ public class FileCheckImpl implements  FileCheck{
         if (fileUpload == null){
             return false;
         }
-        System.out.println(literalShit(1));
-        System.out.println(literalShit(11));
-
         if (fileUpload.getFile().isEmpty()){
             return false;
         }
@@ -31,13 +28,6 @@ public class FileCheckImpl implements  FileCheck{
         }
         LOGGER.info("Metadata is valid.");
         return true;
-    }
-
-    private String literalShit(int testNum){
-        if (testNum > 10) {
-            return "Good";
-        }
-        return "Fail";
     }
 
 }

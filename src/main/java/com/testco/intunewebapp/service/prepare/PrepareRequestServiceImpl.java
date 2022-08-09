@@ -1,7 +1,7 @@
 package com.testco.intunewebapp.service.prepare;
 
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
-import com.testco.intunewebapp.model.FileUploadRequest;
+import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.intunewebapp.model.UploadFile;
 import com.testco.intunewebapp.model.UploadMetadata;
 import com.testco.iw.models.FileUpload;
@@ -20,7 +20,7 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
     Logger LOGGER = Logger.getLogger(PrepareRequestService.class.getName());
 
     @Override
-    public FileUploadRequest convertUploadRequest(FileUpload fileUpload) {
+    public UploadRequestRaw convertUploadRequest(FileUpload fileUpload) {
 
         UploadMetadata metadata =  setDefaultMetadata(fileUpload.getMetadata());
         UploadFile uploadFile = setUploadFile(fileUpload.getFile());
@@ -49,7 +49,7 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
             uploadMetadata[0] = metadata;
         }
 
-        return FileUploadRequest.builder()
+        return UploadRequestRaw.builder()
                 .file(uploadFile)
                 .metadata(uploadMetadata)
                 .build();

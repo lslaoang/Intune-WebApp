@@ -46,7 +46,6 @@ public class ResourceService {
                     .bodyToMono(String.class)
                     .block();
             LOGGER.info("Retrieving of resources successful!");
-            System.out.println("Is this it: " + token);
 
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;

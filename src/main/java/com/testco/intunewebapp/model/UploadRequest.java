@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class FileUploadRequest {
-    private UploadFile file;
-    private UploadMetadata[] metadata;
+public class UploadRequest {
+    UploadFile uploadFile;
+    UploadMetadata uploadMetadata;
 }

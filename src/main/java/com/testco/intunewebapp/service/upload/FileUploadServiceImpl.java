@@ -1,6 +1,8 @@
 package com.testco.intunewebapp.service.upload;
 
-import com.testco.intunewebapp.model.FileUploadRequest;
+import com.google.gson.Gson;
+import com.testco.intunewebapp.model.UploadRequest;
+import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.intunewebapp.service.prepare.PrepareRequestErrorException;
 import com.testco.intunewebapp.service.prepare.PrepareRequestServiceImpl;
 import com.testco.iw.models.FileUpload;
@@ -36,21 +38,31 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public void uploadToResource(FileUpload fileUpload) {
 
-        FileUploadRequest fileUploadRequest;
+        UploadRequestRaw uploadRequestRaw;
         try{
-            fileUploadRequest = prepareRequestService.convertUploadRequest(fileUpload);
+            uploadRequestRaw = prepareRequestService.convertUploadRequest(fileUpload);
         }catch (RuntimeException e){
             LOGGER.severe("Error occurred while converting the request");
             throw new PrepareRequestErrorException("Error happened while converting the request.");
         }
 
+
         try {
-            int numberOfCopies = fileUploadRequest.getMetadata().length;
+            int numberOfCopies = uploadRequestRaw.getMetadata().length;
+            System.out.println("Raw Request: " + new Gson().toJson(uploadRequestRaw.getMetadata()));
 
             int counter = 1;
             while(counter <= numberOfCopies){
                 LOGGER.info("Sending file(s) to resource " + counter  + "/" + numberOfCopies);
-                sendFile(fileUploadRequest);
+
+                UploadRequest uploadRequest = UploadRequest.builder()
+                        .uploadFile(uploadRequestRaw.getFile())
+                        .uploadMetadata(uploadRequestRaw.getMetadata()[counter - 1])
+                        .build();
+
+                sendFile(uploadRequest);
+                System.out.println("This is it" + new Gson().toJson(uploadRequest));
+
                 counter++;
             }
 
@@ -61,12 +73,13 @@ public class FileUploadServiceImpl implements FileUploadService {
         LOGGER.info("Uploaded successful!");
     }
 
-    private void sendFile(FileUploadRequest fileUploadRequest){
+    private void sendFile(UploadRequest uploadRequest){
+        LOGGER.info("This is the full request: " + uploadRequest);
         webClient
                 .post()
                 .uri(resourceBaseUri + resourceEndpoint)
                 .attributes(clientRegistrationId("testco-webapp"))
-                .bodyValue(fileUploadRequest)
+                .bodyValue(uploadRequest)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
