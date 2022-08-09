@@ -9,5 +9,5 @@ import lombok.Setter;
 @Builder
 public class FileUploadRequest {
     private UploadFile file;
-    private UploadMetadata metadata;
+    private UploadMetadata[] metadata;
 }

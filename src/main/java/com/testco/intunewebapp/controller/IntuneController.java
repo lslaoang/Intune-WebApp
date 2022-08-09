@@ -1,6 +1,7 @@
 package com.testco.intunewebapp.controller;
 
 import com.testco.intunewebapp.service.ResourceService;
+import com.testco.intunewebapp.service.prepare.PrepareRequestErrorException;
 import com.testco.intunewebapp.service.recieve.FileCheck;
 import com.testco.intunewebapp.service.upload.FileUploadService;
 import com.testco.intunewebapp.service.upload.UploadErrorException;
@@ -60,7 +61,7 @@ public class IntuneController implements IntuneApi {
 
         try {
             fileUploadService.uploadToResource(fileUpload);
-        } catch (UploadErrorException e) {
+        } catch (UploadErrorException | PrepareRequestErrorException e) {
             return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new Accepted(), HttpStatus.CREATED);
