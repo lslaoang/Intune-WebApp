@@ -1,4 +1,4 @@
-package com.testco.intunewebapp.service;
+package com.testco.intunewebapp.service.resource;
 
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import org.jboss.logging.Logger;
