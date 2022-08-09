@@ -19,7 +19,7 @@ public class UploadMetadata {
     @Getter
     @Setter
     @Builder
-    public class DocumentDomain {
+    public static class DocumentDomain {
         private String businessDomain;
         private String businessDocument;
         private String businessRelationId;
