@@ -48,33 +48,30 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 
         try {
-            int numberOfCopies = uploadRequestRaw.getMetadata().length;
-            System.out.println("Raw Request: " + new Gson().toJson(uploadRequestRaw.getMetadata()));
+            int numberOfCopies = uploadRequestRaw.getMetadata().size();
+            System.out.println("RAW REQUEST: " + new Gson().toJson(uploadRequestRaw));
 
-            int counter = 1;
-            while(counter <= numberOfCopies){
-                LOGGER.info("Sending file(s) to resource " + counter  + "/" + numberOfCopies);
+
+            for(int i = 0; i < numberOfCopies; i++){
+                LOGGER.info("Sending file(s) to resource ... " + (i + 1)  + "/" + numberOfCopies);
 
                 UploadRequest uploadRequest = UploadRequest.builder()
                         .uploadFile(uploadRequestRaw.getFile())
-                        .uploadMetadata(uploadRequestRaw.getMetadata()[counter - 1])
+                        .uploadMetadata(uploadRequestRaw.getMetadata().get(i))
                         .build();
 
                 sendFile(uploadRequest);
-                System.out.println("This is it" + new Gson().toJson(uploadRequest));
-
-                counter++;
             }
 
         }catch (RuntimeException e){
             LOGGER.severe("Error occurred while uploading file to resource.");
             throw new UploadErrorException("Uploading file(s) to resource failed." + e);
         }
-        LOGGER.info("Uploaded successful!");
+        LOGGER.info("Uploaded successfully!");
     }
 
     private void sendFile(UploadRequest uploadRequest){
-        LOGGER.info("This is the full request: " + uploadRequest);
+        LOGGER.info("Sending file(s) to the resource. ");
         webClient
                 .post()
                 .uri(resourceBaseUri + resourceEndpoint)

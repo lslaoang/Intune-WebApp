@@ -1,15 +1,16 @@
 package com.testco.intunewebapp.service.prepare;
 
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
-import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.intunewebapp.model.UploadFile;
 import com.testco.intunewebapp.model.UploadMetadata;
+import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.iw.models.FileUpload;
 import com.testco.iw.models.Metadata;
 import com.testco.iw.models.MetadataCopies;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,19 +35,18 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 LOGGER.info("Multiple copy requests detected.");
             }
         }catch (RuntimeException e){
-            copySize = 1;
             LOGGER.info("Multiple copy not detected in the request.");
         }
 
-        UploadMetadata[] uploadMetadata = new UploadMetadata[copySize];
+        List<UploadMetadata> uploadMetadata = new ArrayList<>();
         if (isMultipleCopy) {
             List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
-            for (int i = 0; i < listOfCopies.size(); i++) {
-                uploadMetadata[i] = addCopyMetadata(metadata, listOfCopies.get(i));
+            for (MetadataCopies listOfCopy : listOfCopies) {
+                uploadMetadata.add(addCopyMetadata(metadata, listOfCopy));
             }
 
         } else {
-            uploadMetadata[0] = metadata;
+            uploadMetadata = Collections.singletonList(metadata);
         }
 
         return UploadRequestRaw.builder()
@@ -55,13 +55,22 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 .build();
     }
 
-    private UploadMetadata addCopyMetadata(UploadMetadata uploadMetadata, MetadataCopies metadataCopies){
-       uploadMetadata.setDirectProcessing(metadataCopies.isDirectProcessing());
-       uploadMetadata.getDocumentDomain().setBusinessRelationId(metadataCopies.getRelationNumber());
-       return uploadMetadata;
+    private UploadMetadata addCopyMetadata(UploadMetadata uploadMetadata, MetadataCopies metadataCopies) {
+
+        return UploadMetadata.builder()
+                .directProcessing(metadataCopies.isDirectProcessing())
+                .scanCountry(uploadMetadata.getScanCountry())
+                .fileDestination(uploadMetadata.getFileDestination())
+                .copyOfOriginal(uploadMetadata.isCopyOfOriginal())
+                .documentDomain(UploadMetadata.DocumentDomain.builder()
+                        .businessDomain(uploadMetadata.getDocumentDomain().getBusinessDomain())
+                        .businessDocument(uploadMetadata.getDocumentDomain().getBusinessDocument())
+                        .businessRelationId(metadataCopies.getRelationNumber())
+                        .build())
+                .build();
     }
 
-    private UploadMetadata setDefaultMetadata(Metadata metadata){
+    private UploadMetadata setDefaultMetadata(Metadata metadata) {
         UploadMetadata.DocumentDomain documentDomain = UploadMetadata.DocumentDomain.builder()
                 .businessDocument(metadata.getBusinessDomain())
                 .businessDomain(metadata.getBusinessDomain())
@@ -80,7 +89,7 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
 
     private UploadFile setUploadFile(String fileInBase64){
         return UploadFile.builder()
-                .fileName("SampleFileName.pdf")
+                .fileName(generateFileName())
                 .fileInBase64(fileInBase64)
                 .build();
     }

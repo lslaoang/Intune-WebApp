@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UploadRequest {
-    UploadFile uploadFile;
-    UploadMetadata uploadMetadata;
+    private UploadFile uploadFile;
+    private UploadMetadata uploadMetadata;
 }
