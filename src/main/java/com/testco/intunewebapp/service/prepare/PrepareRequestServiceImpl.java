@@ -34,19 +34,24 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 LOGGER.info("Multiple copy requests detected.");
             }
         }catch (RuntimeException e){
+            copySize = 1;
             LOGGER.info("Multiple copy not detected in the request.");
         }
 
-        if(isMultipleCopy){
+        UploadMetadata[] uploadMetadata = new UploadMetadata[copySize];
+        if (isMultipleCopy) {
             List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
-            for(MetadataCopies metadataCopies : listOfCopies){
-                addCopyMetadata(metadata, metadataCopies);
+            for (int i = 0; i < listOfCopies.size(); i++) {
+                uploadMetadata[i] = addCopyMetadata(metadata, listOfCopies.get(i));
             }
+
+        } else {
+            uploadMetadata[0] = metadata;
         }
 
         return FileUploadRequest.builder()
                 .file(uploadFile)
-                .metadata(metadata)
+                .metadata(uploadMetadata)
                 .build();
     }
 
