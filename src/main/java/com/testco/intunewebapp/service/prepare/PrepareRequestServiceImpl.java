@@ -93,6 +93,13 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 .fileInBase64(fileInBase64)
                 .build();
     }
+
+    private String generateFileName(){
+        final String DOCUMENT_ORIGIN = "scan3SPG";
+        final String FILE_TYPE = ".pdf";
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        return DOCUMENT_ORIGIN + timeStamp + FILE_TYPE;
+    }
     
     private String getDestinationId(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
