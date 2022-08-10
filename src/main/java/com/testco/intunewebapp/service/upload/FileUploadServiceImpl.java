@@ -46,6 +46,8 @@ public class FileUploadServiceImpl implements FileUploadService {
             LOGGER.severe("Error occurred while converting the request");
             throw new PrepareRequestErrorException("Error happened while converting the request.");
         }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println("RAW REQUEST: \n" + gson.toJson(uploadRequestRaw));
 
 
         try {
@@ -59,9 +61,8 @@ public class FileUploadServiceImpl implements FileUploadService {
                         .uploadMetadata(uploadRequestRaw.getMetadata().get(i))
                         .build();
 
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                System.out.println("RAW REQUEST: \n" + gson.toJson(uploadRequest));
                 sendFile(uploadRequest);
+                System.out.println("UPLOAD REQUEST: \n" + gson.toJson(uploadRequest));
             }
 
         }catch (RuntimeException e){

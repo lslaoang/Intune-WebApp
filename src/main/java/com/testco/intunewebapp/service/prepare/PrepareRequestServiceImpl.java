@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -96,9 +97,9 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
     }
 
     private String generateFileName(){
-        final String DOCUMENT_ORIGIN = "scan3SPG_";
+        final String DOCUMENT_ORIGIN = "scanDocument_";
         final String FILE_TYPE = ".pdf";
-        String date = String.valueOf(new SimpleDateFormat("MM-dd-yyy"));
+        String date = new SimpleDateFormat("yyyy-MM-dd-hhmm").format(new Date());
         String timeStamp = String.valueOf(System.currentTimeMillis());
         return DOCUMENT_ORIGIN + date + timeStamp + FILE_TYPE;
     }
