@@ -10,6 +10,7 @@ import com.testco.iw.models.MetadataCopies;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -95,10 +96,11 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
     }
 
     private String generateFileName(){
-        final String DOCUMENT_ORIGIN = "scan3SPG";
+        final String DOCUMENT_ORIGIN = "scan3SPG_";
         final String FILE_TYPE = ".pdf";
+        String date = String.valueOf(new SimpleDateFormat("MM-dd-yyy"));
         String timeStamp = String.valueOf(System.currentTimeMillis());
-        return DOCUMENT_ORIGIN + timeStamp + FILE_TYPE;
+        return DOCUMENT_ORIGIN + date + timeStamp + FILE_TYPE;
     }
     
     private String getDestinationId(){

@@ -49,8 +49,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         try {
             int numberOfCopies = uploadRequestRaw.getMetadata().size();
-            System.out.println("RAW REQUEST: " + new Gson().toJson(uploadRequestRaw));
-
 
             for(int i = 0; i < numberOfCopies; i++){
                 LOGGER.info("Sending file(s) to resource ... " + (i + 1)  + "/" + numberOfCopies);
@@ -60,6 +58,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                         .uploadMetadata(uploadRequestRaw.getMetadata().get(i))
                         .build();
 
+                System.out.println("RAW REQUEST: " + new Gson().toJson(uploadRequest));
                 sendFile(uploadRequest);
             }
 
