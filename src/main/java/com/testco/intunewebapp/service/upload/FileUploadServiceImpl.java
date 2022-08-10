@@ -55,6 +55,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
             for(int i = 0; i < numberOfCopies; i++){
                 LOGGER.info("Sending file(s) to resource ... " + (i + 1)  + "/" + numberOfCopies);
+                uploadRequestRaw.getFile().setFileName(prepareRequestService.generateFileName());
 
                 UploadRequest uploadRequest = UploadRequest.builder()
                         .uploadFile(uploadRequestRaw.getFile())

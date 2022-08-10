@@ -91,17 +91,16 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
 
     private UploadFile setUploadFile(String fileInBase64){
         return UploadFile.builder()
-                .fileName(generateFileName())
                 .fileInBase64(fileInBase64)
                 .build();
     }
 
-    private String generateFileName(){
+    public String generateFileName(){
         final String DOCUMENT_ORIGIN = "scanDocument_";
         final String FILE_TYPE = ".pdf";
         String date = new SimpleDateFormat("yyyy-MM-dd-hhmm").format(new Date());
         String timeStamp = String.valueOf(System.currentTimeMillis());
-        return DOCUMENT_ORIGIN + date + timeStamp + FILE_TYPE;
+        return DOCUMENT_ORIGIN + date + "-" + timeStamp + FILE_TYPE;
     }
     
     private String getDestinationId(){
