@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -37,19 +36,30 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 LOGGER.info("Multiple copy requests detected.");
             }
         }catch (RuntimeException e){
+            copySize = 1;
             LOGGER.info("Multiple copy not detected in the request.");
         }
 
-        List<UploadMetadata> uploadMetadata = new ArrayList<>();
-        if (isMultipleCopy) {
-            List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
-            for (MetadataCopies listOfCopy : listOfCopies) {
-                uploadMetadata.add(addCopyMetadata(metadata, listOfCopy));
-            }
+        UploadMetadata[] uploadMetadata = new UploadMetadata[copySize];
+        try{
+            if (isMultipleCopy) {
+//            If List
+//            List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
+//            for (MetadataCopies listOfCopy : listOfCopies) {
+//                uploadMetadata.add(addCopyMetadata(metadata, listOfCopy));
+                List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
+                for(int i = 0; i < copySize; i++){
+                    uploadMetadata[i] = addCopyMetadata(metadata, listOfCopies.get(i));
+                }
 
-        } else {
-            uploadMetadata = Collections.singletonList(metadata);
+            } else {
+//            uploadMetadata = Collections.singletonList(metadata);
+                uploadMetadata[0] = metadata;
+            }
+        } catch (RuntimeException e){
+            throw new PrepareRequestErrorException("Error occurred processing metadata.");
         }
+
 
         return UploadRequestRaw.builder()
                 .file(uploadFile)

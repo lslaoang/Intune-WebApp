@@ -46,24 +46,21 @@ public class FileUploadServiceImpl implements FileUploadService {
             LOGGER.severe("Error occurred while converting the request");
             throw new PrepareRequestErrorException("Error happened while converting the request.");
         }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println("RAW REQUEST: \n" + gson.toJson(uploadRequestRaw));
 
 
         try {
-            int numberOfCopies = uploadRequestRaw.getMetadata().size();
-
+            int numberOfCopies = uploadRequestRaw.getMetadata().length;
+            checkRequest(uploadRequestRaw);
             for(int i = 0; i < numberOfCopies; i++){
                 LOGGER.info("Sending file(s) to resource ... " + (i + 1)  + "/" + numberOfCopies);
                 uploadRequestRaw.getFile().setFileName(prepareRequestService.generateFileName());
 
                 UploadRequest uploadRequest = UploadRequest.builder()
                         .uploadFile(uploadRequestRaw.getFile())
-                        .uploadMetadata(uploadRequestRaw.getMetadata().get(i))
+                        .uploadMetadata(uploadRequestRaw.getMetadata()[i])
                         .build();
-
+                checkRequest(uploadRequest);
                 sendFile(uploadRequest);
-                System.out.println("UPLOAD REQUEST: \n" + gson.toJson(uploadRequest));
             }
 
         }catch (RuntimeException e){
@@ -71,6 +68,16 @@ public class FileUploadServiceImpl implements FileUploadService {
             throw new UploadErrorException("Uploading file(s) to resource failed." + e);
         }
         LOGGER.info("Uploaded successfully!");
+    }
+
+    @Value("${spring.profiles.active}")
+    String activeProfile;
+
+    private void checkRequest(Object anyObject){
+        if(!activeProfile.equals("prod")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            System.out.println("Object content: =========> \n" + gson.toJson(anyObject));
+        }
     }
 
     private void sendFile(UploadRequest uploadRequest){

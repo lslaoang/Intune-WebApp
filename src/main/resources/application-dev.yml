@@ -1,0 +1,37 @@
+api:
+  base-path: /api/v1
+
+
+provider:
+  apigee:
+    base-uri: http://localhost:8088
+    verify: /api/v1/verify
+    file-upload: /api/v1/file-upload
+
+
+app:
+  allowed-group: "IT"
+  version:
+    ios: '1.2.1, 1.2.3, 1.2.4'
+    android: '1.2.1, 1.2.3, 1.2.4'
+
+
+server:
+  port: 8088
+
+azure:
+  activedirectory:
+    client-id: 077eb991-1556-481b-9145-26ded6919fbf
+    client-secret: A2i7Q~rIzmbyuSgq-Q4iM55R.kfklTvpIDdNE
+    app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
+    tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
+    authorization-clients:
+      graph:
+        scopes:
+          - https://graph.microsoft.com/User.Read
+      testco-res:
+        scopes:
+          - api://testco-res/File.Upload
+      testco-webapp:
+        scopes:
+          - api://testco-webapp/Consumer.read

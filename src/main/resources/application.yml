@@ -8,7 +8,7 @@ management:
 
 spring:
   profiles:
-    active: local
+    active: dev
 
 logging:
   level:
