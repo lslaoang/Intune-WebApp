@@ -1,6 +1,7 @@
 package com.testco.intunewebapp.service.upload;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.testco.intunewebapp.model.UploadRequest;
 import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.intunewebapp.service.prepare.PrepareRequestErrorException;
@@ -58,7 +59,8 @@ public class FileUploadServiceImpl implements FileUploadService {
                         .uploadMetadata(uploadRequestRaw.getMetadata().get(i))
                         .build();
 
-                System.out.println("RAW REQUEST: " + new Gson().toJson(uploadRequest));
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                System.out.println("RAW REQUEST: \n" + gson.toJson(uploadRequest));
                 sendFile(uploadRequest);
             }
 
