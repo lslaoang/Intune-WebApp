@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Intune Adapter
   description: Web application that will serve as verification steps using Azrure AD
-  version: 1.0.0
+  version: 2.0.0
 servers:
   - url:  https://testco-app.azurewebsites.net
 
