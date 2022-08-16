@@ -14,7 +14,7 @@ tags:
 
 paths:
   /intune/verify:
-    get:
+    post:
       tags:
       - Verify
       summary: "Verify token provided by the client"
@@ -64,7 +64,7 @@ paths:
 
       responses:
         200:
-          $ref: '#/components/responses/Accepted'
+          $ref: '#/components/responses/UploadSuccess'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -88,6 +88,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Accepted'
+
+    UploadSuccess:
+      description: "Upload success."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UploadSuccess'
 
     BadRequest:
       description: "Request error."
@@ -184,6 +191,19 @@ components:
             type: string
             example: "Access granted"
             default: "Access granted"
+
+    UploadSuccess:
+      type: object
+      description: "Uploaded successfully."
+      properties:
+        status:
+          type: integer
+          example: 200
+          default: 200
+        title:
+          type: string
+          example: "File uploaded successfully."
+          default: "File uploaded successfully."
     BadRequest:
       type: object
       description: "Something wrong with the request."
