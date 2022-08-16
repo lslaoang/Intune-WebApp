@@ -48,7 +48,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebS
                         .anyRequest()
                         .denyAll())
                 .headers()
-                .contentSecurityPolicy("default-src 'non'");
+                .contentSecurityPolicy("default-src 'none'");
         // @formatter:on
     }
 }

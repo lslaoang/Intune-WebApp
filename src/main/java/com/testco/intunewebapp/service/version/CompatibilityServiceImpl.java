@@ -15,7 +15,7 @@ import static com.testco.intunewebapp.util.RequestUtil.validateVersionFormat;
 public class CompatibilityServiceImpl implements CompatibilityService {
     
     private static final String ANDROID = "android";
-    private static final String IOS = "android";
+    private static final String IOS = "ios";
     private static final String MAJOR = "major";
     private static final String MINOR = "minor";
 
@@ -40,19 +40,21 @@ public class CompatibilityServiceImpl implements CompatibilityService {
                 validateAppVersion(getRevision(IOS_VERSION), getRevision(version));
             } else {
                 LOGGER.severe("Unknown operating system. " + os);
-                throw new VersionException();
+                throw new VersionException("Unknown operating system.");
             }
         } catch (RuntimeException e) {
             LOGGER.severe("Error occurred while checking app version. " + e.getMessage());
-            throw new VersionException();
+            throw new VersionException(e.getMessage());
         }
         LOGGER.info(String.format("Version %s is compatible!", version));
     }
 
     private void validateAppVersion(Map<String, Integer> acceptedVersionMap, Map<String, Integer> versionMap) {
         if (!Objects.equals(versionMap.get(MAJOR), acceptedVersionMap.get(MAJOR))
-                && (versionMap.get(MINOR)) >= acceptedVersionMap.get(MINOR)) {
-            throw new RuntimeException("Version is NOT compatible");
+                && (versionMap.get(MINOR)) < acceptedVersionMap.get(MINOR)) {
+            System.out.println(versionMap.get(MAJOR) + "  =   " + acceptedVersionMap.get(MAJOR));
+            System.out.println(versionMap.get(MINOR) + "  =   " + acceptedVersionMap.get(MINOR));
+            throw new RuntimeException("Application version is NOT compatible.");
         }
     }
 

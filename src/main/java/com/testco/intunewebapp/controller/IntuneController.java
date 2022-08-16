@@ -7,6 +7,7 @@ import com.testco.intunewebapp.service.upload.FileUploadService;
 import com.testco.intunewebapp.service.upload.UploadErrorException;
 import com.testco.intunewebapp.service.verify.VerifyGroupException;
 import com.testco.intunewebapp.service.verify.VerifyService;
+import com.testco.intunewebapp.service.version.CompatibilityService;
 import com.testco.intunewebapp.service.version.VersionBodyService;
 import com.testco.intunewebapp.service.version.VersionException;
 import com.testco.intunewebapp.service.version.VersionHeaderService;
@@ -35,11 +36,12 @@ public class IntuneController implements IntuneApi {
     private final HttpServletRequest request;
     private final VersionHeaderService versionHeaderService;
     private final FileUploadService fileUploadService;
+    private final CompatibilityService compatibilityService;
 
     public IntuneController(VerifyService verifyService, VersionBodyService versionBodyService,
                             ResourceService resourceService, FileCheck fileCheck,
                             HttpServletRequest request, VersionHeaderService versionHeaderService,
-                            FileUploadService fileUploadService) {
+                            FileUploadService fileUploadService, CompatibilityService compatibilityService) {
         this.verifyService = verifyService;
         this.versionBodyService = versionBodyService;
         this.resourceService = resourceService;
@@ -47,6 +49,7 @@ public class IntuneController implements IntuneApi {
         this.request = request;
         this.versionHeaderService = versionHeaderService;
         this.fileUploadService = fileUploadService;
+        this.compatibilityService = compatibilityService;
     }
 
     @Override
@@ -74,7 +77,8 @@ public class IntuneController implements IntuneApi {
     @Override
     public ResponseEntity<Accepted> verify(AppInformation body) {
         try {
-            versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
+//            versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
+            compatibilityService.verifyVersion(body);
         } catch (VersionException e) {
             NotSupported notSupported = new NotSupported();
             notSupported.setTitle("Bad request. " + e.getMessage());
