@@ -36,8 +36,9 @@ public class IntuneController implements IntuneApi {
     private final VersionHeaderService versionHeaderService;
     private final FileUploadService fileUploadService;
 
-    public IntuneController(VerifyService verifyService, VersionBodyService versionBodyService, ResourceService resourceService,
-                            FileCheck fileCheck, HttpServletRequest request, VersionHeaderService versionHeaderService,
+    public IntuneController(VerifyService verifyService, VersionBodyService versionBodyService,
+                            ResourceService resourceService, FileCheck fileCheck,
+                            HttpServletRequest request, VersionHeaderService versionHeaderService,
                             FileUploadService fileUploadService) {
         this.verifyService = verifyService;
         this.versionBodyService = versionBodyService;
@@ -49,10 +50,10 @@ public class IntuneController implements IntuneApi {
     }
 
     @Override
-    public ResponseEntity<Accepted> uploadFile(FileUpload fileUpload) {
+    public ResponseEntity<UploadSuccess> uploadFile(FileUpload fileUpload) {
         try {
 //            resourceService.checkResource();
-//            verifyService.authorize();
+            verifyService.authorize();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
             return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
@@ -67,7 +68,7 @@ public class IntuneController implements IntuneApi {
         } catch (UploadErrorException | PrepareRequestErrorException e) {
             return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(new Accepted(), HttpStatus.CREATED);
+        return new ResponseEntity<>(new UploadSuccess(), HttpStatus.CREATED);
     }
 
     @Override
