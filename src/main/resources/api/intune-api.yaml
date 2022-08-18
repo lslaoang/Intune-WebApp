@@ -13,19 +13,36 @@ tags:
     description: Endpoint for checking / receiveing of payload sent by the client
 
 paths:
-  /intune/verify:
+
+  /intune/app-version:
     post:
+      tags:
+        - Verify
+      summary: "Verify client's app version."
+      operationId: "appVersionCheck"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppInformation'
+      responses:
+        200:
+          $ref: '#/components/responses/Accepted'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        402:
+          $ref: '#/components/responses/NotSupported'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+  /intune/verify:
+    get:
       tags:
       - Verify
       summary: "Verify token provided by the client"
       operationId: "verify"
-
-      requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AppInformation'
 
       security:
         - bearerAuth: [ ]
@@ -35,8 +52,6 @@ paths:
           $ref: '#/components/responses/Accepted'
         400:
           $ref: '#/components/responses/BadRequest'
-        402:
-          $ref: '#/components/responses/NotSupported'
         401:
           $ref: '#/components/responses/AccessDenied'
         403:

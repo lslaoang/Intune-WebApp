@@ -12,7 +12,6 @@ import com.testco.intunewebapp.service.version.VersionBodyService;
 import com.testco.intunewebapp.service.version.VersionException;
 import com.testco.intunewebapp.service.version.VersionHeaderService;
 import com.testco.iw.api.IntuneApi;
-import com.testco.iw.models.InternalError;
 import com.testco.iw.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,8 @@ public class IntuneController implements IntuneApi {
     public IntuneController(VerifyService verifyService, VersionBodyService versionBodyService,
                             ResourceService resourceService, FileCheck fileCheck,
                             HttpServletRequest request, VersionHeaderService versionHeaderService,
-                            FileUploadService fileUploadService, CompatibilityService compatibilityService) {
+                            FileUploadService fileUploadService,
+                            CompatibilityService compatibilityService) {
         this.verifyService = verifyService;
         this.versionBodyService = versionBodyService;
         this.resourceService = resourceService;
