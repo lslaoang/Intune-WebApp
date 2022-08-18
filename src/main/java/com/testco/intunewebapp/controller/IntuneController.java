@@ -56,7 +56,7 @@ public class IntuneController implements IntuneApi {
         this.compatibilityService = compatibilityService;
     }
 
-//    @Override
+    @Deprecated
     public ResponseEntity<Accepted> appVersionCheck(AppInformation body) {
         try {
             compatibilityService.verifyVersion(body);
@@ -112,7 +112,6 @@ public class IntuneController implements IntuneApi {
     @Deprecated
     public ResponseEntity<Accepted> verify(AppInformation body) {
         try {
-//            versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
             compatibilityService.verifyVersion(body);
         } catch (VersionException e) {
             NotSupported notSupported = new NotSupported();
@@ -131,13 +130,6 @@ public class IntuneController implements IntuneApi {
 
     @Override
     public ResponseEntity<Accepted> verify() {
-//        try {
-//            versionHeaderService.verifyVersion(request);
-//        } catch (VersionException e) {
-//            BadRequest badRequest = new BadRequest();
-//            badRequest.setTitle("Bad request. " + e.getMessage());
-//            return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
-//        }
 
         try {
             verifyService.authorize();
