@@ -11,21 +11,50 @@ tags:
     description: Endpoint for verifying client
   - name: Upload file
     description: Endpoint for checking / receiveing of payload sent by the client
+  - name: Version check
+    description: Endpoint for verifying app's compatibility
 
 paths:
+
+  /intune/version-check:
+    get:
+      tags:
+        - Version check
+      summary: "Verify client's app version."
+      operationId: "appVersionCheck"
+      parameters:
+        - in: header
+          name: X-UBS-APP-ENTITY
+          schema:
+            type: string
+            required: true
+
+#      security:
+#        - bearerAuth: [ ]
+
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppInformation'
+      responses:
+        200:
+          $ref: '#/components/responses/Accepted'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        402:
+          $ref: '#/components/responses/NotSupported'
+        500:
+          $ref: '#/components/responses/InternalError'
+
   /intune/verify:
-    post:
+    get:
       tags:
       - Verify
       summary: "Verify token provided by the client"
       operationId: "verify"
-
-      requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AppInformation'
 
       security:
         - bearerAuth: [ ]
@@ -35,8 +64,6 @@ paths:
           $ref: '#/components/responses/Accepted'
         400:
           $ref: '#/components/responses/BadRequest'
-        402:
-          $ref: '#/components/responses/NotSupported'
         401:
           $ref: '#/components/responses/AccessDenied'
         403:
