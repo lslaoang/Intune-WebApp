@@ -16,12 +16,15 @@ import com.testco.iw.models.InternalError;
 import com.testco.iw.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("${api.base-path}")
@@ -53,10 +56,29 @@ public class IntuneController implements IntuneApi {
         this.compatibilityService = compatibilityService;
     }
 
-    @Override
+//    @Override
     public ResponseEntity<Accepted> appVersionCheck(AppInformation body) {
         try {
             compatibilityService.verifyVersion(body);
+        } catch (VersionException e){
+            NotSupported notSupported = new NotSupported();
+            notSupported.setTitle("Application not supported. " + e.getMessage());
+            return new ResponseEntity(notSupported, HttpStatus.valueOf(402));
+        }
+        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+    }
+
+    @Value("${application.entity}")
+    private List<String> appEntity;
+
+    @Override
+    public ResponseEntity<Accepted> appVersionCheck(AppInformation body, String X_UBS_APP_ENTITY) {
+        try {
+            if(! appEntity.contains(X_UBS_APP_ENTITY.toUpperCase(Locale.ROOT))){
+                throw new VersionException("Expected header missing.");
+            }
+            compatibilityService.verifyVersion(body);
+
         } catch (VersionException e){
             NotSupported notSupported = new NotSupported();
             notSupported.setTitle("Application not supported. " + e.getMessage());

@@ -11,18 +11,27 @@ tags:
     description: Endpoint for verifying client
   - name: Upload file
     description: Endpoint for checking / receiveing of payload sent by the client
+  - name: Version check
+    description: Endpoint for verifying app's compatibility
 
 paths:
 
-  /version-check:
-    post:
+  /intune/version-check:
+    get:
       tags:
-        - Verify
+        - Version check
       summary: "Verify client's app version."
       operationId: "appVersionCheck"
+      parameters:
+        - in: header
+          name: X-UBS-APP-ENTITY
+          schema:
+            type: string
+            required: true
 
 #      security:
-#        - appEntityHeader: []
+#        - bearerAuth: [ ]
+
 
       requestBody:
         required: true
@@ -98,11 +107,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-#
-#    appEntityHeader:
-#      type: apiKey
-#      in: header
-#      name: X-UBS-App-Entity
 
   responses:
     Accepted:
