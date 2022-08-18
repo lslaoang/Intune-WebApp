@@ -12,6 +12,7 @@ import com.testco.intunewebapp.service.version.VersionBodyService;
 import com.testco.intunewebapp.service.version.VersionException;
 import com.testco.intunewebapp.service.version.VersionHeaderService;
 import com.testco.iw.api.IntuneApi;
+import com.testco.iw.models.InternalError;
 import com.testco.iw.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,18 @@ public class IntuneController implements IntuneApi {
     }
 
     @Override
+    public ResponseEntity<Accepted> appVersionCheck(AppInformation body) {
+        try {
+            compatibilityService.verifyVersion(body);
+        } catch (VersionException e){
+            NotSupported notSupported = new NotSupported();
+            notSupported.setTitle("Application not supported. " + e.getMessage());
+            return new ResponseEntity(notSupported, HttpStatus.valueOf(402));
+        }
+        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+    }
+
+    @Override
     public ResponseEntity<UploadSuccess> uploadFile(FileUpload fileUpload) {
         try {
 //            resourceService.checkResource();
@@ -74,7 +87,7 @@ public class IntuneController implements IntuneApi {
         return new ResponseEntity<>(new UploadSuccess(), HttpStatus.CREATED);
     }
 
-    @Override
+    @Deprecated
     public ResponseEntity<Accepted> verify(AppInformation body) {
         try {
 //            versionBodyService.verifyVersion(body.getAppOs(), body.getAppVersion());
@@ -94,15 +107,15 @@ public class IntuneController implements IntuneApi {
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
 
-    @Deprecated
+    @Override
     public ResponseEntity<Accepted> verify() {
-        try {
-            versionHeaderService.verifyVersion(request);
-        } catch (VersionException e) {
-            BadRequest badRequest = new BadRequest();
-            badRequest.setTitle("Bad request. " + e.getMessage());
-            return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
-        }
+//        try {
+//            versionHeaderService.verifyVersion(request);
+//        } catch (VersionException e) {
+//            BadRequest badRequest = new BadRequest();
+//            badRequest.setTitle("Bad request. " + e.getMessage());
+//            return new ResponseEntity(badRequest, HttpStatus.BAD_REQUEST);
+//        }
 
         try {
             verifyService.authorize();

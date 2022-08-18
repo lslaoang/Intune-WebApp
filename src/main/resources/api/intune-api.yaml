@@ -14,12 +14,15 @@ tags:
 
 paths:
 
-  /intune/app-version:
+  /version-check:
     post:
       tags:
         - Verify
       summary: "Verify client's app version."
       operationId: "appVersionCheck"
+
+#      security:
+#        - appEntityHeader: []
 
       requestBody:
         required: true
@@ -95,6 +98,11 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+#
+#    appEntityHeader:
+#      type: apiKey
+#      in: header
+#      name: X-UBS-App-Entity
 
   responses:
     Accepted:
