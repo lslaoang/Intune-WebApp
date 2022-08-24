@@ -29,10 +29,6 @@ paths:
             type: string
             required: true
 
-#      security:
-#        - bearerAuth: [ ]
-
-
       requestBody:
         required: true
         content:
@@ -44,7 +40,7 @@ paths:
           $ref: '#/components/responses/Accepted'
         400:
           $ref: '#/components/responses/BadRequest'
-        402:
+        426:
           $ref: '#/components/responses/NotSupported'
         500:
           $ref: '#/components/responses/InternalError'

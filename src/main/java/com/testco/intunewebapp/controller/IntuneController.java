@@ -82,7 +82,7 @@ public class IntuneController implements IntuneApi {
         } catch (VersionException e){
             NotSupported notSupported = new NotSupported();
             notSupported.setTitle("Application not supported. " + e.getMessage());
-            return new ResponseEntity(notSupported, HttpStatus.valueOf(402));
+            return new ResponseEntity(notSupported, HttpStatus.UPGRADE_REQUIRED);
         }
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
