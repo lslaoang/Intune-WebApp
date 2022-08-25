@@ -92,9 +92,13 @@ public class IntuneController implements IntuneApi {
 
     @Override
     public ResponseEntity<AppVersion> getVersion() {
-        AppVersion appVersion  = new AppVersion();
-        appVersion.setVersion(backEndVersion);
-        return new ResponseEntity(appVersion, HttpStatus.ACCEPTED);
+        try{
+            AppVersion appVersion  = new AppVersion();
+            appVersion.setVersion(backEndVersion);
+            return new ResponseEntity(appVersion, HttpStatus.ACCEPTED);
+        } catch (Exception e){
+            return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

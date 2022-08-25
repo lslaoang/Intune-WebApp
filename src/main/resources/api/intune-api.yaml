@@ -28,8 +28,6 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/Version'
-        400:
-          $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalError'
 
