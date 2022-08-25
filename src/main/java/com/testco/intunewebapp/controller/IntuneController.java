@@ -87,6 +87,16 @@ public class IntuneController implements IntuneApi {
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
     }
 
+    @Value("${application.version.backend}")
+    private String backEndVersion;
+
+    @Override
+    public ResponseEntity<AppVersion> getVersion() {
+        AppVersion appVersion  = new AppVersion();
+        appVersion.setVersion(backEndVersion);
+        return new ResponseEntity(appVersion, HttpStatus.ACCEPTED);
+    }
+
     @Override
     public ResponseEntity<UploadSuccess> uploadFile(FileUpload fileUpload) {
         try {
