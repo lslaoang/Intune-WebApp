@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Intune Adapter
   description: Web application that will serve as verification steps using Azrure AD
-  version: 2.0.0
+  version: 3.0.0
 servers:
   - url:  https://testco-app.azurewebsites.net
 
@@ -13,8 +13,26 @@ tags:
     description: Endpoint for checking / receiveing of payload sent by the client
   - name: Version check
     description: Endpoint for verifying app's compatibility
+  - name: BE version
+    description: Public API of backend version
 
 paths:
+
+  /intune/version:
+    get:
+      tags:
+        - BE version
+      summary: "Public endpoint for checking backend's version."
+      operationId: "getVersion"
+
+      responses:
+        200:
+          $ref: '#/components/responses/Version'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalError'
+
 
   /intune/version-check:
     get:
@@ -105,6 +123,13 @@ components:
       bearerFormat: JWT
 
   responses:
+    Version:
+      description: "Version of the backend application."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AppVersion'
+
     Accepted:
       description: "Access granted."
       content:
@@ -148,6 +173,14 @@ components:
             $ref: '#/components/schemas/InternalError'
 
   schemas:
+    AppVersion:
+      type: object
+      description: "Version of the BE application."
+      properties:
+        version:
+          type: string
+          example: "3.0.0"
+
     AppInformation:
       type: object
       description: "Information about request origin."
