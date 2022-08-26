@@ -95,7 +95,7 @@ public class IntuneController implements IntuneApi {
         try{
             AppVersion appVersion  = new AppVersion();
             appVersion.setVersion(backEndVersion);
-            return new ResponseEntity(appVersion, HttpStatus.ACCEPTED);
+            return new ResponseEntity(appVersion, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
