@@ -307,4 +307,4 @@ components:
           default: 402
         title:
           type: string
-          default: "You are using unsupported version of this app."
+          default: "Version compatibility error."
