@@ -32,8 +32,13 @@ public class CompatibilityServiceImpl implements CompatibilityService {
         String os = appInformation.getAppOs();
         String version = appInformation.getAppVersion();
         try {
+            validateVersionFormat(getThreeParams(version));
+        } catch (Exception e) {
+            LOGGER.severe("Error occurred while checking version format. " + e.getMessage());
+            throw new VersionException(e.getMessage());
+        }
 
-            validateVersionFormat(version);
+        try {
             if (os.equalsIgnoreCase(ANDROID)) {
                 validateAppVersion(getRevision(ANDROID_VERSION), getRevision(version));
             } else if (os.equalsIgnoreCase(IOS)) {
@@ -64,6 +69,15 @@ public class CompatibilityServiceImpl implements CompatibilityService {
         versionMap.put(MAJOR, Integer.parseInt(versionList.get(0)));
         versionMap.put(MINOR, Integer.parseInt(versionList.get(1)));
         return versionMap;
+    }
+
+    private String getThreeParams(String rawVersion) {
+        List<String> versionList = Arrays.stream(rawVersion.split("\\.")).collect(Collectors.toList());
+        String version = versionList.get(0) + "."
+                + versionList.get(1) + "."
+                + versionList.get(2);
+        LOGGER.info("Version is: " + version);
+        return version;
     }
 
 }
