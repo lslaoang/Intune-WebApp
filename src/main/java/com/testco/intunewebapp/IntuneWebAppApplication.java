@@ -10,7 +10,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @EnableConfigurationProperties(ApigeeConfig.class)
-public class IntuneWebAppApplication extends SpringBootServletInitializer {
+public class IntuneWebAppApplication extends SpringBootServletInitializer{
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
