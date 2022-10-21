@@ -11,6 +11,11 @@ app:
     ios: "1.2.1"
     andriod: "1.2.1"
 
+apigee:
+  upload-endpoint: /api/v1/file-upload
+  verify-endpoint: /api/v1/verify
+  client-id: testco-res
+
 azure:
   activedirectory:
     client-id: 077eb991-1556-481b-9145-26ded6919fbf
