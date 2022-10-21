@@ -50,6 +50,9 @@ public class ResourceService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
 
+            LOGGER.info("Exchange token: \n" + token);
+            LOGGER.info("User token: \n" +  user.getTokenValue());
+
         } catch (Exception e) {
             LOGGER.error("Failed to check resource." + e);
             throw new RuntimeException("Error occurred calling resource endpoint.", e);

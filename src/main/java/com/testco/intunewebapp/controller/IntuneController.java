@@ -146,6 +146,7 @@ public class IntuneController implements IntuneApi {
     public ResponseEntity<Accepted> verify() {
 
         try {
+            resourceService.checkResource();
             verifyService.authorize();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
