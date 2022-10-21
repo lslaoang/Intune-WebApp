@@ -1,9 +1,7 @@
 package com.testco.intunewebapp.service.resource;
 
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -47,11 +45,11 @@ public class ResourceService {
                     .block();
             LOGGER.info("Retrieving of resources successful!");
 
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
+//           //Will change the signed token if used in another authorized endpoint
+//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
 
             LOGGER.info("Exchange token: \n" + token);
-            LOGGER.info("User token: \n" +  user.getTokenValue());
 
         } catch (Exception e) {
             LOGGER.error("Failed to check resource." + e);
