@@ -29,8 +29,13 @@ public class IntuneAuthenticationFailureFilter {
             LOGGER.severe(request.getHeader("Authorization"));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            writeErrorResponse(response, new Forbidden());
-            LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
-       }));
+            if (exception.getMessage().contains("Jwt expired")) {
+                writeErrorResponse(response, new Forbidden());
+                LOGGER.severe(String.format("Access from %s denied. Token expired. ", request.getRemoteAddr()) + exception.getMessage());
+            } else {
+                writeErrorResponse(response, new Forbidden());
+                LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
+            }
+        }));
     }
 }
