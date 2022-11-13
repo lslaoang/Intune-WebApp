@@ -1,7 +1,7 @@
 package com.testco.intunewebapp.handler;
 
 
-import com.testco.iw.models.Forbidden;
+import com.testco.iw.models.AccessDenied;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,10 +36,10 @@ public class IntuneAuthenticationFailureFilter implements AuthenticationFailureH
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             if (exception.getMessage().contains("Jwt expired")) {
-                writeErrorResponse(response, new Forbidden().code(4012));
+                writeErrorResponse(response, new AccessDenied().code(4012));
                 LOGGER.severe(String.format("Access from %s denied. Token expired. ", request.getRemoteAddr()) + exception.getMessage());
             } else {
-                writeErrorResponse(response, new Forbidden().code(4011));
+                writeErrorResponse(response, new AccessDenied().code(4011));
                 LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
             }
 
