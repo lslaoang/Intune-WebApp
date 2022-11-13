@@ -26,7 +26,7 @@ public class IntuneAuthenticationFailureFilter implements AuthenticationFailureH
     public BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter(AuthenticationManager authenticationManager) {
         LOGGER.severe("Checking request ...");
         BearerTokenAuthenticationFilter filter = new BearerTokenAuthenticationFilter(authenticationManager);
-//        filter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler());
         return filter;
     }
 
@@ -36,12 +36,13 @@ public class IntuneAuthenticationFailureFilter implements AuthenticationFailureH
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             if (exception.getMessage().contains("Jwt expired")) {
-                writeErrorResponse(response, new Forbidden());
+                writeErrorResponse(response, new Forbidden().code(4012));
                 LOGGER.severe(String.format("Access from %s denied. Token expired. ", request.getRemoteAddr()) + exception.getMessage());
             } else {
-                writeErrorResponse(response, new Forbidden());
+                writeErrorResponse(response, new Forbidden().code(4011));
                 LOGGER.severe(String.format("Access from %s denied. Token invalid. ", request.getRemoteAddr()) + exception.getMessage());
             }
+
         }));
     }
 
