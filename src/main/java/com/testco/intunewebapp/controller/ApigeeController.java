@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.testco.intunewebapp.util.RequestUtil.printObjectAsString;
+
 @RestController
 public class ApigeeController {
 
@@ -47,7 +49,8 @@ public class ApigeeController {
     }
 
     @PostMapping("/api/v1/file-upload")
-    public ResponseEntity<Accepted> uploadFile( UploadRequest UploadRequest) {
+    public ResponseEntity<Accepted> uploadFile( UploadRequest uploadRequest) {
+        printObjectAsString(uploadRequest.getUploadMetadata());
         return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
 
     }
