@@ -18,14 +18,3 @@ application:
     backend: "3.0.0"
   entity: 'MK8, MK9'
 
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
-        web:
-          filter:
-            CommonsRequestLoggingFilter: DEBUG
-    com:
-      azure:
-        spring: TRACE

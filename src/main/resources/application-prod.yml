@@ -29,3 +29,14 @@ azure:
       testco-res:
         scopes:
           - api://testco-res/Consumer.read
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+    com:
+      azure:
+        spring: TRACE

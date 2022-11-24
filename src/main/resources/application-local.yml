@@ -39,3 +39,14 @@ azure:
       testco-webapp:
         scopes:
           - api://testco-webapp/Consumer.read
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+    com:
+      azure:
+        spring: TRACE
