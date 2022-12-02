@@ -105,7 +105,6 @@ public class IntuneController implements IntuneApi {
     public ResponseEntity<UploadSuccess> uploadFile(FileUpload fileUpload) {
         try {
 //            resourceService.checkResource();
-            resourceService.checkResourceViaHttpClient();
             verifyService.authorize();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
@@ -147,8 +146,9 @@ public class IntuneController implements IntuneApi {
     public ResponseEntity<Accepted> verify() {
 
         try {
-            resourceService.checkResource();
-            verifyService.authorize();
+//            resourceService.checkResource();
+//            verifyService.authorize();
+            resourceService.checkResourceViaHttpClient();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
             return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
