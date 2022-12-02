@@ -1,7 +1,9 @@
 package com.testco.intunewebapp.service.resource;
 
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
-import org.apache.http.client.methods.HttpGet;
+import com.testco.intunewebapp.service.resource.handler.ResourceResponseHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -23,6 +25,8 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 public class ResourceService {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceService.class.getName());
+    private static final int REQUEST_TIMEOUT_MS = 5000;
+    private static final int CONNECTION_TIMEOUT_MS = 5000;
 
     private final WebClient webClient;
     private final HttpServletRequest servletRequest;
@@ -69,8 +73,7 @@ public class ResourceService {
     public void checkResourceViaHttpClient() {
         LOGGER.info("Checking of resources via HTTP client started.");
 
-
-        HttpGet request = new HttpGet(UriComponentsBuilder.fromHttpUrl(resourceBaseUri).path(resourceEndpoint).build().toUri());
+        HttpPost request = new HttpPost(UriComponentsBuilder.fromHttpUrl(resourceBaseUri).path(resourceEndpoint).build().toUri());
         request.setHeader("Authorization", "Bearer "+ getUserToken());
 
         try {
@@ -78,8 +81,12 @@ public class ResourceService {
                     .setSSLContext(new SSLContextBuilder()
                             .loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                    .setDefaultRequestConfig(RequestConfig.custom()
+                            .setConnectionRequestTimeout(REQUEST_TIMEOUT_MS)
+                            .setConnectTimeout(CONNECTION_TIMEOUT_MS)
+                            .build())
                     .build();
-            client.execute(request);
+            client.execute(request, ResourceResponseHandler.handleResponse);
             LOGGER.info("Retrieving of resources successful!");
 
         } catch (Exception e) {
