@@ -35,13 +35,14 @@ public class ApigeeController {
 
 
     @GetMapping("/api/v1/verify")
-    public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    public String getExchangeToken(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) throws InterruptedException {
 
         LOGGER.info("This is the apigee verify endpoint: " + apigeeConfig.getVerifyEndpoint());
         LOGGER.info("This is the apigee upload endpoint: " + apigeeConfig.getUploadEndpoint());
         LOGGER.info("This is the apigee client registration ID: " + apigeeConfig.getClientId());
 
         if (isInternalRequest()) {
+            Thread.sleep(60010);
             return oAuth2AuthorizedClient.getAccessToken().getTokenValue();
         } else {
             throw new RuntimeException("Required attribute not found.");

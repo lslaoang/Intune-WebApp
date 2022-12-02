@@ -1,9 +1,18 @@
 package com.testco.intunewebapp.service.resource;
 
+import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.TrustAllStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -55,5 +64,33 @@ public class ResourceService {
             LOGGER.error("Failed to check resource." + e);
             throw new RuntimeException("Error occurred calling resource endpoint.", e);
         }
+    }
+
+    public void checkResourceViaHttpClient() {
+        LOGGER.info("Checking of resources via HTTP client started.");
+
+
+        HttpGet request = new HttpGet(UriComponentsBuilder.fromHttpUrl(resourceBaseUri).path(resourceEndpoint).build().toUri());
+        request.setHeader("Authorization", "Bearer "+ getUserToken());
+
+        try {
+            CloseableHttpClient client = HttpClients.custom()
+                    .setSSLContext(new SSLContextBuilder()
+                            .loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
+                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                    .build();
+            client.execute(request);
+            LOGGER.info("Retrieving of resources successful!");
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to check resource." + e);
+            throw new RuntimeException("Error occurred calling resource endpoint.", e);
+        }
+    }
+
+    private String getUserToken(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
+        return user.getTokenValue();
     }
 }
