@@ -3,7 +3,7 @@ package com.testco.intunewebapp.service.resource;
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import com.testco.intunewebapp.service.resource.handler.ResourceResponseHandler;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,7 +17,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.URI;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
@@ -73,7 +77,7 @@ public class ResourceService {
     public void checkResourceViaHttpClient() {
         LOGGER.info("Checking of resources via HTTP client started.");
 
-        HttpPost request = new HttpPost(UriComponentsBuilder.fromHttpUrl(resourceBaseUri).path(resourceEndpoint).build().toUri());
+        HttpGet request = new HttpGet(UriComponentsBuilder.fromHttpUrl("http://localhost:8999").path("/timeout").build().toUri());
         request.setHeader("Authorization", "Bearer "+ getUserToken());
 
         try {
@@ -89,9 +93,11 @@ public class ResourceService {
             client.execute(request, ResourceResponseHandler.handleResponse);
             LOGGER.info("Retrieving of resources successful!");
 
-        } catch (Exception e) {
+        } catch ( KeyManagementException| NoSuchAlgorithmException | KeyStoreException e) {
             LOGGER.error("Failed to check resource." + e);
             throw new RuntimeException("Error occurred calling resource endpoint.", e);
+        } catch (IOException e) {
+            throw new RuntimeException("Error occurred connecting to client.", e);
         }
     }
 

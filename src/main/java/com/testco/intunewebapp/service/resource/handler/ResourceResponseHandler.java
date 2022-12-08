@@ -21,6 +21,9 @@ public class ResourceResponseHandler {
         StringBuilder result = resultBody(httpResponse);
         if(!(status >= 200 && status < 300)){
             LOGGER.severe("Error occurred.");
+            if(status == 500){
+                throw new InternalError();
+            }
             throw new UploadErrorException(String.format("Request failed with error code: %d Reason: %s",status,result));
         }
         return String.valueOf(status);

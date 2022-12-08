@@ -47,9 +47,8 @@ public class ApigeeController {
     }
 
     @PostMapping("/api/v1/verify")
-    public ResponseEntity verifyResource(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    public ResponseEntity verifyResource(@RegisteredOAuth2AuthorizedClient("testco-res") OAuth2AuthorizedClient oAuth2AuthorizedClient) throws InterruptedException {
             System.out.println("You've reached this.");
-//            Thread.sleep(15010);
             String name = oAuth2AuthorizedClient.getPrincipalName();
             return new ResponseEntity<>("You got here! " +  name ,HttpStatus.ACCEPTED);
     }
