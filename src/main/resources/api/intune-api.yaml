@@ -113,6 +113,36 @@ paths:
         500:
           $ref: '#/components/responses/InternalError'
 
+  /intune/feedback:
+    post:
+      tags:
+        - Upload file
+      summary: "Client feedback"
+      description: "Send the client's feedback to specific group mailbox."
+      operationId: "sendClientFeedBack"
+
+      security:
+        - bearerAuth: [ ]
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedBack'
+
+      responses:
+        200:
+          $ref: '#/components/responses/FeedBackPosted'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/AccessDenied'
+        403:
+          $ref: '#/components/responses/ForbiddenAccess'
+        500:
+          $ref: '#/components/responses/InternalError'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -205,6 +235,7 @@ components:
           example: "byte64encodedString"
         metadata:
           $ref: '#/components/schemas/Metadata'
+
     Metadata:
       type: object
       description: "Information about the file sent"
@@ -233,6 +264,20 @@ components:
                 type: boolean
                 default: false
 
+    FeedBack:
+      type: object
+      description: "Feedback content."
+      required:
+        - subject
+        - body
+      properties:
+        subject:
+          type: string
+          example: "Additional Feature"
+        body:
+          type: string
+          example: "Please add this *** feature."
+
     Accepted:
       type: object
       description: "Accepted"
@@ -258,6 +303,20 @@ components:
           type: string
           example: "File uploaded successfully."
           default: "File uploaded successfully."
+
+    FeedBackPosted:
+      type: object
+      description: "Feedback sent successfully."
+      properties:
+        status:
+          type: integer
+          example: 200
+          default: 200
+        title:
+          type: string
+          example: "Feedback posted successfully."
+          default: "Feedback posted successfully."
+
     BadRequest:
       type: object
       description: "Something wrong with the request."
