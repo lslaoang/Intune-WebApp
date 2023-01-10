@@ -44,6 +44,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebS
                         .mvcMatchers(HttpMethod.GET, "/api/v1/intune/version").anonymous()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/intune/version-check").anonymous()
                         .mvcMatchers(HttpMethod.POST, "/api/v1/intune/upload-file").authenticated()
+                        .mvcMatchers(HttpMethod.POST, "/api/v1/intune/feedback").authenticated()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/intune/verify").hasAuthority("SCOPE_Consumer.read")
 //                        .mvcMatchers(HttpMethod.POST, "/api/v1/verify").authenticated()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/verify").authenticated()

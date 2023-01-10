@@ -7,8 +7,6 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authorize
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
-import org.springframework.web.reactive.function.client.ClientRequest;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -23,11 +21,11 @@ public class WebClientConfig {
                 .build();
     }
 
-    private ExchangeFilterFunction authHeader(String token) {
-        return (request, next) -> next.exchange(ClientRequest.from(request).headers((headers) -> {
-            headers.setBearerAuth(token);
-        }).build());
-    }
+//    private ExchangeFilterFunction authHeader(String token) {
+//        return (request, next) -> next.exchange(ClientRequest.from(request).headers((headers) -> {
+//            headers.setBearerAuth(token);
+//        }).build());
+//    }
 
     @Bean
     public OAuth2AuthorizedClientRepository authorizedClientRepository() {
