@@ -15,6 +15,8 @@ tags:
     description: Endpoint for verifying app's compatibility
   - name: BE version
     description: Public API of backend version
+  - name: Post Feedback
+    description: Feedback from the client
 
 paths:
 
@@ -116,7 +118,7 @@ paths:
   /intune/feedback:
     post:
       tags:
-        - Upload file
+        - Post Feedback
       summary: "Client feedback"
       description: "Send the client's feedback to specific group mailbox."
       operationId: "sendClientFeedBack"
@@ -194,11 +196,18 @@ components:
             $ref: '#/components/schemas/Forbidden'
 
     InternalError:
-      description: "Internal Error occured."
+      description: "Internal Error occurred."
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/InternalError'
+
+    FeedBackPosted:
+      description: "Feedback posted successfully."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeedBackPosted'
 
   schemas:
     AppVersion:
