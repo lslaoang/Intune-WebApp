@@ -22,10 +22,11 @@ public class RequestUtil {
     @Value("${spring.profiles.active}")
     static String activeProfile;
 
-    public static void printObjectAsString(Object anyObject) {
-        if (!activeProfile.equals("prod")) {
+    public static String printObjectAsString(Object anyObject) {
+//        if (!activeProfile.equals("prod")) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            System.out.println("Object content: =========> \n" + gson.toJson(anyObject));
-        }
+//            System.out.println("Object content: =========> \n" + gson.toJson(anyObject));
+            return gson.toJson(anyObject);
+//        }
     }
 }

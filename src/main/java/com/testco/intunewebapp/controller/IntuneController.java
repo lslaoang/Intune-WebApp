@@ -1,5 +1,6 @@
 package com.testco.intunewebapp.controller;
 
+import com.testco.intunewebapp.service.feedback.FeedBackService;
 import com.testco.intunewebapp.service.prepare.PrepareRequestErrorException;
 import com.testco.intunewebapp.service.recieve.FileCheck;
 import com.testco.intunewebapp.service.resource.ResourceService;
@@ -40,12 +41,13 @@ public class IntuneController implements IntuneApi {
     private final VersionHeaderService versionHeaderService;
     private final FileUploadService fileUploadService;
     private final CompatibilityService compatibilityService;
+    private final FeedBackService feedBackService;
 
     public IntuneController(VerifyService verifyService, VersionBodyService versionBodyService,
                             ResourceService resourceService, FileCheck fileCheck,
                             HttpServletRequest request, VersionHeaderService versionHeaderService,
                             FileUploadService fileUploadService,
-                            CompatibilityService compatibilityService) {
+                            CompatibilityService compatibilityService, FeedBackService feedBackService) {
         this.verifyService = verifyService;
         this.versionBodyService = versionBodyService;
         this.resourceService = resourceService;
@@ -54,6 +56,7 @@ public class IntuneController implements IntuneApi {
         this.versionHeaderService = versionHeaderService;
         this.fileUploadService = fileUploadService;
         this.compatibilityService = compatibilityService;
+        this.feedBackService = feedBackService;
     }
 
     @Deprecated
@@ -102,6 +105,18 @@ public class IntuneController implements IntuneApi {
     }
 
     @Override
+    public ResponseEntity<FeedBackPosted> sendClientFeedBack(FeedBack body) {
+        try{
+            feedBackService.sendFeedBack(body);
+            return new ResponseEntity(new FeedBackPosted(), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(new InternalError(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @Override
     public ResponseEntity<UploadSuccess> uploadFile(FileUpload fileUpload) {
         try {
 //            resourceService.checkResource();
@@ -147,8 +162,8 @@ public class IntuneController implements IntuneApi {
 
         try {
 //            resourceService.checkResource();
-//            verifyService.authorize();
-            resourceService.checkResourceViaHttpClient();
+            verifyService.authorize();
+//            resourceService.checkResourceViaHttpClient();
         } catch (VerifyGroupException e) {
             LOGGER.warn("Authorization check failed. {}", e.getMessage());
             return new ResponseEntity(new Forbidden(), HttpStatus.FORBIDDEN);
