@@ -40,12 +40,6 @@ paths:
         - Version check
       summary: "Verify client's app version."
       operationId: "appVersionCheck"
-      parameters:
-        - in: header
-          name: X-UBS-APP-ENTITY
-          schema:
-            type: string
-            required: true
 
       requestBody:
         required: true

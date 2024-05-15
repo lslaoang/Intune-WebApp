@@ -15,6 +15,7 @@ import com.testco.intunewebapp.service.version.VersionHeaderService;
 import com.testco.iw.api.IntuneApi;
 import com.testco.iw.models.InternalError;
 import com.testco.iw.models.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,11 +33,11 @@ public class IntuneController implements IntuneApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntuneController.class);
 
+    private final HttpServletRequest request;
     private final VerifyService verifyService;
     private final VersionBodyService versionBodyService;
     private final ResourceService resourceService;
     private final FileCheck fileCheck;
-    private final HttpServletRequest request;
     private final VersionHeaderService versionHeaderService;
     private final FileUploadService fileUploadService;
     private final CompatibilityService compatibilityService;
@@ -74,21 +74,21 @@ public class IntuneController implements IntuneApi {
     @Value("${application.entity}")
     private List<String> appEntity;
 
-    @Override
-    public ResponseEntity<Accepted> appVersionCheck(AppInformation body, String X_UBS_APP_ENTITY) {
-        try {
-            if(! appEntity.contains(X_UBS_APP_ENTITY.toUpperCase(Locale.ROOT))){
-                throw new VersionException("Expected header missing.");
-            }
-            compatibilityService.verifyVersion(body);
-
-        } catch (VersionException e){
-            NotSupported notSupported = new NotSupported();
-            notSupported.setTitle("Error occurred while checking app version. " + e.getMessage());
-            return new ResponseEntity(notSupported, HttpStatus.UPGRADE_REQUIRED);
-        }
-        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
-    }
+//    @Override
+//    public ResponseEntity<Accepted> appVersionCheck(AppInformation body) {
+//        try {
+////            if(! appEntity.contains(X_UBS_APP_ENTITY.toUpperCase(Locale.ROOT))){
+////                throw new VersionException("Expected header missing.");
+////            }
+//            compatibilityService.verifyVersion(body);
+//
+//        } catch (VersionException e){
+//            NotSupported notSupported = new NotSupported();
+//            notSupported.setTitle("Error occurred while checking app version. " + e.getMessage());
+//            return new ResponseEntity(notSupported, HttpStatus.UPGRADE_REQUIRED);
+//        }
+//        return new ResponseEntity<>(new Accepted(), HttpStatus.ACCEPTED);
+//    }
 
     @Value("${application.version.backend}")
     private String backEndVersion;

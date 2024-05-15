@@ -1,9 +1,11 @@
 package com.testco.intunewebapp.config;
 
+import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
@@ -28,8 +30,10 @@ public class WebClientConfig {
 //    }
 
     @Bean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository() {
-        return new HttpSessionOAuth2AuthorizedClientRepository();
+    public ClientRegistrationRepository clientRegistrationRepository(AadAuthenticationProperties aadAuthenticationProperties) {
+        String secret = aadAuthenticationProperties.getCredential().getClientSecret();
+        System.out.println(secret);
+        return new AadClientRegistrationRepository(aadAuthenticationProperties);
     }
 
     @Bean

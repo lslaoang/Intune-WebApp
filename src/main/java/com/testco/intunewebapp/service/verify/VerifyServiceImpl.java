@@ -1,6 +1,5 @@
 package com.testco.intunewebapp.service.verify;
 
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.testco.intunewebapp.util.RequestUtil.getUserNameFromRequest;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
 @Service
@@ -33,9 +33,7 @@ public class VerifyServiceImpl implements VerifyService {
     public void authorize() {
         LOGGER.info("Checking authorization.");
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-        String userEmail = user.getAttribute("preferred_username");
+        String userEmail = getUserNameFromRequest();
         if (userEmail == null) {
             throw new VerifyGroupException("Claim \"preferred_username\" with user email is not present in the token. ");
         }

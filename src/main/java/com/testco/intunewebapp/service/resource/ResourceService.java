@@ -1,7 +1,7 @@
 package com.testco.intunewebapp.service.resource;
 
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import com.testco.intunewebapp.service.resource.handler.ResourceResponseHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -9,19 +9,18 @@ import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
@@ -69,7 +68,7 @@ public class ResourceService {
             LOGGER.info("Exchange token: \n" + token);
 
         } catch (Exception e) {
-            LOGGER.error("Failed to check resource." + e);
+            LOGGER.severe("Failed to check resource." + e);
             throw new RuntimeException("Error occurred calling resource endpoint.", e);
         }
     }
@@ -94,7 +93,7 @@ public class ResourceService {
             LOGGER.info("Retrieving of resources successful!");
 
         } catch ( KeyManagementException| NoSuchAlgorithmException | KeyStoreException e) {
-            LOGGER.error("Failed to check resource." + e);
+            LOGGER.severe("Failed to check resource." + e);
             throw new RuntimeException("Error occurred calling resource endpoint.", e);
         } catch (IOException e) {
             throw new RuntimeException("Error occurred connecting to client.", e);
@@ -102,8 +101,7 @@ public class ResourceService {
     }
 
     private String getUserToken(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-        return user.getTokenValue();
+        String userToken = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userToken;
     }
 }

@@ -1,15 +1,21 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        exclude: ""
-        include: "health"
-      base-path: /
-
 spring:
   profiles:
     active: dev
-
+  cloud:
+    azure:
+      active-directory:
+        app-id-uri: ${azure.app-id-uri}
+        profile:
+          tenant-id: ${azure.tenant-id}
+        credential:
+          client-id: ${azure.client-id}
+          client-secret: ${azure.client-secret}
+        authorization-clients:
+          graph:
+            scopes:
+              - https://graph.microsoft.com/User.Read
+              - https://graph.microsoft.com/Mail.Send
+        enabled: true
 
 application:
   version:
@@ -17,4 +23,12 @@ application:
     android: "2.1.3"
     backend: "3.0.0"
   entity: 'MK8, MK9'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: ""
+        include: "health"
+      base-path: /
 

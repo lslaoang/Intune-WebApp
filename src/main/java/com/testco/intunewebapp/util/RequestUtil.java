@@ -1,11 +1,13 @@
 package com.testco.intunewebapp.util;
 
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class RequestUtil {
@@ -33,10 +35,10 @@ public class RequestUtil {
     }
 
     public static String getUserNameFromRequest(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-        String userEmail = user.getAttribute("preferred_username");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> details = ((JwtAuthenticationToken) authentication).getTokenAttributes();
+        String username = (String) details.get("preferred_username");
         LOGGER.info("Username successfully fetched!");
-        return userEmail;
+        return username;
     }
 }

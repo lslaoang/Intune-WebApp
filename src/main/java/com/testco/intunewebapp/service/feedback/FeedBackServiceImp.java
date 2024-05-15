@@ -2,10 +2,6 @@ package com.testco.intunewebapp.service.feedback;
 
 import com.azure.identity.OnBehalfOfCredential;
 import com.azure.identity.OnBehalfOfCredentialBuilder;
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
-import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
-import com.microsoft.graph.models.*;
-import com.microsoft.graph.requests.GraphServiceClient;
 import com.testco.iw.models.FeedBack;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,14 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.testco.intunewebapp.util.RequestUtil.getUserNameFromRequest;
+
 @Service
 public class FeedBackServiceImp implements FeedBackService{
 
-//    final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-//            .clientId("077eb991-1556-481b-9145-26ded6919fbf")
-//            .clientSecret("A2i7Q~rIzmbyuSgq-Q4iM55R.kfklTvpIDdNE")
-//            .tenantId("a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e")
-//            .build();
 
     final OnBehalfOfCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder()
             .clientId("077eb991-1556-481b-9145-26ded6919fbf")
@@ -37,53 +30,51 @@ public class FeedBackServiceImp implements FeedBackService{
 
     List scopes = List.of(".default");
 
-    final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(scopes, onBehalfOfCredential);
+//    final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(scopes, onBehalfOfCredential);
 
 
     @Override
     public void sendFeedBack(FeedBack feedBack) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-//        String userEmail = user.getAttribute("preferred_username");
+        String userEmail = getUserNameFromRequest();
 //        String uid = user.getAttribute("uid");
-
-        GraphServiceClient graphClient = GraphServiceClient
-                .builder()
-                .authenticationProvider(tokenCredentialAuthProvider)
-                .buildClient();
-
-        Message message = new Message();
-        message.subject = "Meet for lunch?";
-        ItemBody body = new ItemBody();
-        body.contentType = BodyType.TEXT;
-        body.content = "The new cafeteria is open.";
-        message.body = body;
-        LinkedList<Recipient> toRecipientsList = new LinkedList<Recipient>();
-        Recipient toRecipients = new Recipient();
-        EmailAddress emailAddress = new EmailAddress();
-        emailAddress.address = "laurel.laoang@gmail.com";
-        toRecipients.emailAddress = emailAddress;
-        toRecipientsList.add(toRecipients);
-        message.toRecipients = toRecipientsList;
-        LinkedList<Recipient> ccRecipientsList = new LinkedList<Recipient>();
-        Recipient ccRecipients = new Recipient();
-        EmailAddress emailAddress1 = new EmailAddress();
-        emailAddress1.address = "laurel.laoang@gmail.com";
-        ccRecipients.emailAddress = emailAddress1;
-        ccRecipientsList.add(ccRecipients);
-        message.ccRecipients = ccRecipientsList;
-
-        boolean saveToSentItems = false;
-
-        graphClient.me()
-                .sendMail(UserSendMailParameterSet
-                        .newBuilder()
-                        .withMessage(message)
-                        .withSaveToSentItems(saveToSentItems)
-                        .build())
-                .buildRequest()
-                .post();
+//
+//        GraphServiceClient graphClient = GraphServiceClient
+//                .builder()
+//                .authenticationProvider(tokenCredentialAuthProvider)
+//                .buildClient();
+//
+//        Message message = new Message();
+//        message.subject = "Meet for lunch?";
+//        ItemBody body = new ItemBody();
+//        body.contentType = BodyType.TEXT;
+//        body.content = "The new cafeteria is open.";
+//        message.body = body;
+//        LinkedList<Recipient> toRecipientsList = new LinkedList<Recipient>();
+//        Recipient toRecipients = new Recipient();
+//        EmailAddress emailAddress = new EmailAddress();
+//        emailAddress.address = "laurel.laoang@gmail.com";
+//        toRecipients.emailAddress = emailAddress;
+//        toRecipientsList.add(toRecipients);
+//        message.toRecipients = toRecipientsList;
+//        LinkedList<Recipient> ccRecipientsList = new LinkedList<Recipient>();
+//        Recipient ccRecipients = new Recipient();
+//        EmailAddress emailAddress1 = new EmailAddress();
+//        emailAddress1.address = "laurel.laoang@gmail.com";
+//        ccRecipients.emailAddress = emailAddress1;
+//        ccRecipientsList.add(ccRecipients);
+//        message.ccRecipients = ccRecipientsList;
+//
+//        boolean saveToSentItems = false;
+//
+//        graphClient.me()
+//                .sendMail(UserSendMailParameterSet
+//                        .newBuilder()
+//                        .withMessage(message)
+//                        .withSaveToSentItems(saveToSentItems)
+//                        .build())
+//                .buildRequest()
+//                .post();
 
     }
 }

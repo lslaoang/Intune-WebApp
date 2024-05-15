@@ -1,13 +1,11 @@
 package com.testco.intunewebapp.service.prepare;
 
-import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import com.testco.intunewebapp.model.UploadFile;
 import com.testco.intunewebapp.model.UploadMetadata;
 import com.testco.intunewebapp.model.UploadRequestRaw;
 import com.testco.iw.models.FileUpload;
 import com.testco.iw.models.Metadata;
-import com.testco.iw.models.MetadataCopies;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.testco.iw.models.MetadataCopiesInner;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -15,6 +13,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static com.testco.intunewebapp.util.RequestUtil.getUserNameFromRequest;
 
 @Service
 public class PrepareRequestServiceImpl implements PrepareRequestService {
@@ -47,7 +47,7 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
 //            List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
 //            for (MetadataCopies listOfCopy : listOfCopies) {
 //                uploadMetadata.add(addCopyMetadata(metadata, listOfCopy));
-                List<MetadataCopies> listOfCopies = fileUpload.getMetadata().getCopies();
+                List<MetadataCopiesInner> listOfCopies = fileUpload.getMetadata().getCopies();
                 for(int i = 0; i < copySize; i++){
                     uploadMetadata[i] = addCopyMetadata(metadata, listOfCopies.get(i));
                 }
@@ -67,10 +67,10 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 .build();
     }
 
-    private UploadMetadata addCopyMetadata(UploadMetadata uploadMetadata, MetadataCopies metadataCopies) {
+    private UploadMetadata addCopyMetadata(UploadMetadata uploadMetadata, MetadataCopiesInner metadataCopies) {
 
         return UploadMetadata.builder()
-                .directProcessing(metadataCopies.isDirectProcessing())
+                .directProcessing(metadataCopies.getDirectProcessing())
                 .scanCountry(uploadMetadata.getScanCountry())
                 .fileDestination(uploadMetadata.getFileDestination())
                 .copyOfOriginal(uploadMetadata.isCopyOfOriginal())
@@ -88,11 +88,11 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
                 .businessDomain(metadata.getBusinessDomain())
                 .build();
         UploadMetadata.FileDestination fileDestination = UploadMetadata.FileDestination.builder()
-                .fileDestinationInbox(Collections.singletonList(getDestinationId()))
+                .fileDestinationInbox(Collections.singletonList(getUserNameFromRequest()))
                 .build();
 
        return  UploadMetadata.builder()
-                .copyOfOriginal(metadata.isCopyOfOriginal())
+                .copyOfOriginal(metadata.getCopyOfOriginal())
                 .documentDomain(documentDomain)
                 .fileDestination(fileDestination)
                 .scanCountry(metadata.getCountry())
@@ -111,11 +111,5 @@ public class PrepareRequestServiceImpl implements PrepareRequestService {
         String date = new SimpleDateFormat("yyyy-MM-dd-hhmm").format(new Date());
         String timeStamp = String.valueOf(System.currentTimeMillis());
         return DOCUMENT_ORIGIN + date + "-" + timeStamp + FILE_TYPE;
-    }
-    
-    private String getDestinationId(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AADOAuth2AuthenticatedPrincipal user = (AADOAuth2AuthenticatedPrincipal) principal;
-        return user.getAttribute("preferred_username");
     }
 }

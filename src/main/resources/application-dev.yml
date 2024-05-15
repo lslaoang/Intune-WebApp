@@ -27,24 +27,11 @@ server:
   port: 8088
 
 azure:
-  activedirectory:
-    client-id: 077eb991-1556-481b-9145-26ded6919fbf
-    client-secret: syp8Q~KKkb2-.3FDpeXYf4KeBLyLU5UstA9EubO. #TODO: Store secrets in VAULT
-    app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
-    tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
-    authorization-clients:
-      graph:
-        scopes:
-          - https://graph.microsoft.com/User.Read
-      graph-send:
-        scopes:
-          - https://graph.microsoft.com/Mail.Send
-      testco-res:
-        scopes:
-          - api://testco-res/File.Upload
-      testco-webapp:
-        scopes:
-          - api://testco-webapp/Consumer.read
+  client-id: 077eb991-1556-481b-9145-26ded6919fbf
+  client-secret: syp8Q~KKkb2-.3FDpeXYf4KeBLyLU5UstA9EubO. #TODO: Store secrets in VAULT
+  app-id-uri: api://077eb991-1556-481b-9145-26ded6919fbf/web
+  tenant-id: a42e43e2-c7b8-499c-89a6-4b9bac2d5a6e
+
 logging:
   level:
     org:
